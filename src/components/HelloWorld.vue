@@ -1,48 +1,96 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
+  <div class='hello'>
+    <div>
+      <input type="text" v-model="name" placeholder="NAME">
+      <input type="text" v-model="tel" placeholder="TEL">
+      <button @click="insertToContact(tel, name)">Add</button>
+    </div>
+
+    <hr>
+
+    <ul :key="key" v-for="(contact, key) in contacts">
+      <li v-if="updateKey === key">
+        <input type="text" v-model="updateName" placeholder="NAME">
+        <input type="text" v-model="updateTel" placeholder="TEL">
+        <button @click="updateContact(updateTel, updateName)">Save</button>
+      </li>
+      <li v-else>
+        {{contact.name}} : {{contact.tel}} 
+        <button @click="setUpdateContact(key, contact)">Update</button>
+        <button @click="deleteContact(key)">Delete</button>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
+import * as firebase from '@/components/firebase'
+var config = {
+  
+  apiKey: "AIzaSyB9RkZFAwtJfZUXYvXZBb2S4GYVSzOkpjE",
+  authDomain: "location-a26be.firebaseapp.com",
+  databaseURL: "https://location-a26be-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "location-a26be",
+  storageBucket: "location-a26be.appspot.com",
+  messagingSenderId: "275944322136",
+  appId: "1:275944322136:web:70f14965096c7dff1e462d",
+  measurementId: "G-2W7W0Z25Y4"
+}
+firebase.initializeApp(config)
+var database = firebase.database()
+var contactRef = database.ref('/contacts')
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  data () {
+    return {
+      contacts: {},
+      tel: '',
+      name: '',
+      updateTel: '',
+      updateName: '',
+      updateKey: ''
+    }
+  },
+  methods: {
+    insertToContact (tel, name) {
+      let data = {
+        tel: tel,
+        name: name
+      }
+      contactRef.push(data)
+      this.tel = ''
+      this.name = ''
+    },
+    setUpdateContact (key, contact) {
+      this.updateKey = key
+      this.updateTel = contact.tel
+      this.updateName = contact.name
+    },
+    updateContact (tel, name) {
+      contactRef.child(this.updateKey).update({
+        tel: tel,
+        name: name
+      })
+      this.updateKey = ''
+      this.updateTel = ''
+      this.updateName = ''
+    },
+    deleteContact (key) {
+      contactRef.child(key).remove()
+    }
+  },
+  mounted () {
+    contactRef.on('value', (snapshot) => {
+      this.contacts = snapshot.val()
+    })
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+h1, h2 {
+  font-weight: normal;
 }
 ul {
   list-style-type: none;
