@@ -24,67 +24,8 @@
 </template>
 
 <script>
-import * as firebase from '@/components/firebase'
-var config = {
-  
-  apiKey: "AIzaSyB9RkZFAwtJfZUXYvXZBb2S4GYVSzOkpjE",
-  authDomain: "location-a26be.firebaseapp.com",
-  databaseURL: "https://location-a26be-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "location-a26be",
-  storageBucket: "location-a26be.appspot.com",
-  messagingSenderId: "275944322136",
-  appId: "1:275944322136:web:70f14965096c7dff1e462d",
-  measurementId: "G-2W7W0Z25Y4"
-}
-firebase.initializeApp(config)
-var database = firebase.database()
-var contactRef = database.ref('/contacts')
-export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      contacts: {},
-      tel: '',
-      name: '',
-      updateTel: '',
-      updateName: '',
-      updateKey: ''
-    }
-  },
-  methods: {
-    insertToContact (tel, name) {
-      let data = {
-        tel: tel,
-        name: name
-      }
-      contactRef.push(data)
-      this.tel = ''
-      this.name = ''
-    },
-    setUpdateContact (key, contact) {
-      this.updateKey = key
-      this.updateTel = contact.tel
-      this.updateName = contact.name
-    },
-    updateContact (tel, name) {
-      contactRef.child(this.updateKey).update({
-        tel: tel,
-        name: name
-      })
-      this.updateKey = ''
-      this.updateTel = ''
-      this.updateName = ''
-    },
-    deleteContact (key) {
-      contactRef.child(key).remove()
-    }
-  },
-  mounted () {
-    contactRef.on('value', (snapshot) => {
-      this.contacts = snapshot.val()
-    })
-  }
-}
+
+
 </script>
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="map-section">
       <!-- <h2>Vue Js Google Maps with Multiple Markers </h2> -->
       <!-- <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p> -->
       <!-- <GmapAutocomplete
@@ -9,7 +9,7 @@
       <gmap-map
         :center="center"
         :zoom="16.5"
-        style="width:100%;  height: 555px;"
+        style="width: 100%; height: 100%"
         :options="{
             zoomControl: false,
             scaleControl: false,
@@ -36,7 +36,7 @@
         ></gmap-marker>
         <!-- <gmap-marker v-on:change="updateCoordinates()" :position="center" :draggable="true" @closeclick="updateCoordinates()"/> -->
       </gmap-map>
-      <transition name="map-info-window-slide">
+      <!-- <transition name="map-info-window-slide">
         <div
           class="map-info-window"
           :opened="infoOpened"
@@ -44,10 +44,6 @@
           v-if="infoOpened"
         >
           <div class="city-info" v-if="selectedMarker">
-            <!-- <div class="city-name">{{ selectedMarker.city }}</div>
-            <div class="city-phone">{{ selectedMarker.phone }}</div>
-            <div class="city-email">{{ selectedMarker.email }}</div>
-            <div class="city-location">{{ selectedMarker.full_name }}</div> -->
             <div class="city-location">{{ selectedMarker.lat }} , {{ selectedMarker.lng }}</div>
             <button class="btn btn-full-width btn-main">Update</button>
             <div class="map-btn-close-holder">
@@ -56,9 +52,9 @@
           </div>
           
         </div>
-      </transition>
-      <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p>
-      <button @click="noom">Refresh</button>
+      </transition> -->
+      <!-- <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p>
+      <button @click="noom">Refresh</button> -->
     </div>
   </template>
    
