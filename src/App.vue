@@ -2,7 +2,8 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/Streaming">Streaming</router-link>
+      <!-- <button type="button" class="btn btn-secondary" >Botton</button> -->
     </nav>
     <router-view/>
   </div>
