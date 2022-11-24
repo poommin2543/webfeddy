@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+   
     <!-- <h1> WebRTC Studio</h1>
     <h3>Using Janus webRTC server.</h3> -->
     <div class="select-ctn">
@@ -16,19 +17,67 @@
       <!-- <button onClick="connect(http://34.143.225.243:8088/janus)">connect</button> -->
 
     </div>
-    <h3 v-if="status == 'starting'"> Loading video stream ...  </h3>
-    <div class="video-vtn">
+    <div class="md-layout">
+    <div class="md-layout-item">
+      <h3 v-if="status == 'starting'"> Loading video stream ...  </h3>
+      <div class="video-vtn">
       <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="640px" height="480px"></video>
     </div>
-    <div v-if="!stream">No Stream</div>
-    <div>Status: {{ status ? status : "No video stream" }}</div>
-    <div v-if="error">{{ error }}</div>
+    </div>
+    <!-- <div class="md-layout-item"></div> -->
+    <div class="md-layout-item">
+      <div class="map-section">
+      <gmap-map
+        :center="center"
+        :zoom="18"
+        style="width: 80%; height: 40%"
+        :options="{
+            zoomControl: false,
+            scaleControl: false,
+            mapTypeControl: false,
+            fullscreenControl: true,
+            streetViewControl: false,
+            disableDefaultUi: false
+          }">
+        <gmap-marker
+          v-for="(item, key) in coordinates"
+          :key="key"
+          :position="getPosition(item)"
+          :clickable="true"
+          :icon="getMarkers1(key)"
+          @click="toggleInfo(item, key)"
+        ></gmap-marker>
+      </gmap-map>
+    </div>
+
+    </div>
+    </div>
+    
+    
+
+    <div class="md-layout">
+    <div class="md-layout-item">
+      <div v-if="!stream">No Stream</div>
+      <div>Status: {{ status ? status : "No video stream" }}</div>
+      <div v-if="error">{{ error }}</div>
+
+    </div>
+    <div class="md-layout-item"></div>
+    <div class="md-layout-item"></div>
+  </div>
   </div>
 </template>
 
 <script>
 // import { Janus } from 'janus-gateway'
 import { Janus } from 'janus-gateway'
+import firebaseApp from './firebase'
+var la = 14.875811571268388;
+var long = 102.01502828868293;
+var la_User = 14.875811571268388;
+var long_User = 102.01502828868293;
+let iconCar ="https://i.postimg.cc/3N0bcm0F/Picture-Car.png";
+let iconUser = "https://i.postimg.cc/bNC9tsGz/icons8-iphone-se-80.png";
 // const JANUS_URL = 'http://127.0.0.1:8088/janus'
 //const JANUS_URL = 'http://34.87.84.21:8088/janus'
 let JANUS_URL = 'https://34.143.225.243:8089/janus'
@@ -54,9 +103,127 @@ export default {
       },
       remoteTracks : {},
       remoteVideos : 0,
+        iconCar,
+        iconUser,
+        latitude: 0,
+        longitude: 0,
+        center: { 
+            lat: 0, 
+            lng: 0
+        },
+        locations: [],
+        currentLocation: null,
+        selectedKey: null,
+        selectedMarker: null,
+        coordinates: {
+        0: {
+          lat: la.toString(),
+          lng: long.toString()
+        },
+        1: {
+          lat: la_User.toString(),
+          lng: long_User.toString()
+        },
+      }
     }
   },
+  computed: {
+    // readonly
+        aDouble() {
+          return this.center
+    },
+  },
   mounted() {
+    this.setLocationLatLng();
+      this.dbRef.on('value', ss => {
+            // console.log(ss.val());
+            
+            for (const [key, value] of Object.entries(ss.val())) {
+              if (key == "latitude"){
+                this.latitude = value
+                console.log(`${key}: ${value}`);
+                // this.latitude;
+                la = value;
+              //   this.coordinates = {
+              //   0: {
+              //     lat: value.toString(),
+              //   },
+              // }
+              // this.center = { 
+              //     lat: value, 
+              //     // lng: long
+              //   }
+
+              }
+              if (key == "longitude"){
+                this.longitude = value
+                console.log(`${key}: ${value}`);
+                long = value;
+              //   this.coordinates = {
+              //   0: {
+              //     lng: value.toString()
+              //   },
+              // }
+              // this.center = {  
+              //     lng: value
+              //   }
+              }
+              this.center = { 
+                  lat: (la+la_User)/2, 
+                  lng: (long+long_User)/2
+                  // lat: la_User, 
+                  // lng:long_User
+                }
+
+              this.coordinates = {
+              0: {
+                lat: la.toString(),
+                lng: long.toString()
+              },
+              1: {
+                lat: la_User.toString(),
+                lng: long_User.toString()
+              },
+      }
+            }
+
+        })
+
+        this.dbRef1.on('value', ss => {
+            console.log(ss.val());
+            for (const [key, value] of Object.entries(ss.val())) {
+              if (key == "latitude"){
+                this.latitude = value
+                console.log(`${key}: ${value}`);
+                // this.latitude;
+                la_User = value;
+
+              }
+              if (key == "longitude"){
+                this.longitude = value
+                console.log(`${key}: ${value}`);
+                long_User = value;
+
+              }
+              this.center = { 
+                  lat: (la+la_User)/2, 
+                  lng: (long+long_User)/2
+                  // lat: la_User, 
+                  // lng:long_User
+                }
+              this.coordinates = {
+              0: {
+                lat: la.toString(),
+                lng: long.toString()
+              },
+              1: {
+                lat: la_User.toString(),
+                lng: long_User.toString()
+              },
+      }
+            }
+
+        })
       Janus.init({
       debug: true,
       dependencies: Janus.useDefaultDependencies(),
@@ -67,6 +234,74 @@ export default {
     })
   },
   methods:{
+    getMarkers(key) {
+      if (this.selectedKey === key) return this.mapMarkerActive;
+      return this.mapMarker;
+    },
+    getMarkers1(key) {
+      console.log(key)
+      if(key == 0){
+        return this.iconCar;
+      }
+      if(key == 1){
+        return this.iconUser;
+      }
+      // if (this.selectedKey === key) return this.mapMarker;
+      // return this.mapMarkerActive;
+    },
+    getPosition: function(marker) {
+      return {
+        lat: parseFloat(marker.lat),
+        lng: parseFloat(marker.lng)
+      };
+    },
+    toggleInfo: function(marker, key) {
+      this.infoPosition = this.getPosition(marker);
+      this.selectedMarker = marker;
+      this.selectedKey = key;
+      this.infoOpened = !this.infoOpened;
+    },
+    closeInfoWindow: function() {
+      this.infoOpened = false;
+      this.markerOptions = this.mapMarker;
+    },
+      setPlace(loc) {
+        this.currentLocation = loc;
+      },
+    
+    
+      setLocationLatLng: function() {
+          navigator.geolocation.getCurrentPosition(geolocation => {
+            this.center = {
+              lat: geolocation.coords.latitude,
+              lng: geolocation.coords.longitude
+            };
+          });
+   
+          // this.locations = [
+          //   {
+          //       lat: la,
+          //       lng: long,
+          //       label: 'user location'
+          //   },
+            // {
+            //     lat: 14.874727933912586,
+            //     lng: 102.0155504911628,
+            //     label: 'Car'
+            // },
+            // {
+            //     lat: 41.3828939,
+            //     lng: 2.1774322,
+            //     label: 'Barcelona'
+            // },
+            // {
+            //     lat: -10.3333333,
+            //     lng: -53.2,
+            //     label: 'Brazil'
+            // }
+        // ];
+   
+      },
     connect(server){
       this.janus = new Janus({server,
         // Call success callback
@@ -210,11 +445,54 @@ export default {
         window.location.reload()
       })
     }
-  }
+  },
+  created() {
+        // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
+        this.dbRef = firebaseApp.database().ref('locationCar')
+        this.dbRef1 = firebaseApp.database().ref('location')
+
+    },
+
+    
+
+    beforeDestroy() {
+        // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
+        this.dbRef.off()
+    }
 }
 </script>
 
-<style>
+<style scoped>
+.map-section {
+    height: 95vh;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-info-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    background: #fff;
+    padding: 15px 20px 10px;
+  }
+  .map-info-window-slide-leave-active,
+  .map-info-window-slide-enter-active {
+    transition: 0.5s;
+  }
+  .map-info-window-slide-enter {
+    transform: translate(0, -100%);
+  }
+  .map-info-window-slide-leave-to {
+    transform: translate(0, -100%);
+  }
+  .city-info > div {
+    margin-bottom: 10px;
+  }
+  .map-btn-close-holder {
+    margin-top: 10px;
+  }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -231,6 +509,6 @@ button {
   margin: 0 .5rem 0 .5rem;
 }
 video {
-  width: 50%;
+  width: 80%;
 }
 </style>
