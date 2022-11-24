@@ -9,8 +9,10 @@
         </option>
       </select>
       <div>{{ stream == null ? "null" : notNull }}</div>
-      <button @click.prevent="start" :disabled="stream">Start</button>
-      <button @click.prevent="stop" :disabled="!stream">Stop</button>
+      <!-- <button @click.prevent="start" :disabled="stream">Start</button> -->
+      <button type="button" class="btn btn-primary" @click.prevent="start" :disabled="stream">Start</button>
+      <!-- <button @click.prevent="stop" :disabled="!stream">Stop</button> -->
+      <button type="button" class="btn btn-secondary" @click.prevent="stop" :disabled="!stream">Stop</button>
       <!-- <button onClick="connect(http://34.143.225.243:8088/janus)">connect</button> -->
 
     </div>
