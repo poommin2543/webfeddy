@@ -14,7 +14,7 @@
             zoomControl: false,
             scaleControl: false,
             mapTypeControl: false,
-            fullscreenControl: false,
+            fullscreenControl: true,
             streetViewControl: false,
             disableDefaultUi: false
           }">
@@ -101,8 +101,8 @@ import firebaseApp from './firebase'
         latitude: 0,
         longitude: 0,
         center: { 
-            lat: la, 
-            lng: long
+            lat: 0, 
+            lng: 0
         },
         locations: [],
         currentLocation: null,
@@ -162,8 +162,10 @@ import firebaseApp from './firebase'
               //   }
               }
               this.center = { 
-                  lat: la, 
-                  lng: long
+                  lat: (la+la_User)/2, 
+                  lng: (long+long_User)/2
+                  // lat: la_User, 
+                  // lng:long_User
                 }
 
               this.coordinates = {
@@ -196,6 +198,12 @@ import firebaseApp from './firebase'
                 long_User = value;
 
               }
+              this.center = { 
+                  lat: (la+la_User)/2, 
+                  lng: (long+long_User)/2
+                  // lat: la_User, 
+                  // lng:long_User
+                }
               this.coordinates = {
               0: {
                 lat: la.toString(),

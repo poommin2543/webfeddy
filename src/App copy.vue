@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <!-- <h1> WebRTC Studio</h1>
-    <h3>Using Janus webRTC server.</h3> -->
+    <h1> WebRTC Studio</h1>
+    <h3>Using Janus webRTC server.</h3>
     <div class="select-ctn">
       <select v-model="streamList.selected" :disabled="stream">
         <option v-for="option in streamList.options" :key="option.id" :value="option.id">
@@ -11,7 +11,6 @@
       <div>{{ stream == null ? "null" : notNull }}</div>
       <button @click.prevent="start" :disabled="stream">Start</button>
       <button @click.prevent="stop" :disabled="!stream">Stop</button>
-      <!-- <button onClick="connect(http://34.143.225.243:8088/janus)">connect</button> -->
 
     </div>
     <h3 v-if="status == 'starting'"> Loading video stream ...  </h3>
@@ -25,15 +24,13 @@
 </template>
 
 <script>
-// import { Janus } from 'janus-gateway'
 import { Janus } from 'janus-gateway'
+
 // const JANUS_URL = 'http://127.0.0.1:8088/janus'
 //const JANUS_URL = 'http://34.87.84.21:8088/janus'
 let JANUS_URL = 'https://34.143.225.243:8089/janus'
 if(window.location.protocol === 'http:'){
-  // console.log(JANUS_URL)
-  JANUS_URL = 'http://34.143.225.243:8088/janus'
-  console.log(JANUS_URL)
+   JANUS_URL = 'http://34.143.225.243:8088/janus'
 }
 
 
@@ -55,9 +52,10 @@ export default {
     }
   },
   mounted() {
-      Janus.init({
+    Janus.init({
       debug: true,
       dependencies: Janus.useDefaultDependencies(),
+      // console.log(JANUS_URL);
       callback: ()=>{
         console.log("Connecting to Janus api with server ",JANUS_URL)
         this.connect(JANUS_URL)
