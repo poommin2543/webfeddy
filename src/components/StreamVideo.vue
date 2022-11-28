@@ -29,8 +29,8 @@
       <div class="map-section">
       <gmap-map
         :center="center"
-        :zoom="18"
-        style="width: 80%; height: 40%"
+        :zoom="15"
+        style="width: 80%; height: 50%"
         :options="{
             zoomControl: false,
             scaleControl: false,
