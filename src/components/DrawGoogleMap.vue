@@ -12,8 +12,8 @@
         style="width: 100%; height: 100%"
         :options="{
             zoomControl: false,
-            scaleControl: false,
-            mapTypeControl: false,
+            scaleControl: true,
+            mapTypeControl: true,
             fullscreenControl: true,
             streetViewControl: false,
             disableDefaultUi: false
@@ -315,6 +315,7 @@ import firebaseApp from './firebase'
     beforeDestroy() {
         // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
         this.dbRef.off()
+        this.dbRef1.off()
     }
   };
   </script>
