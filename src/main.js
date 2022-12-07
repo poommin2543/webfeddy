@@ -5,7 +5,9 @@ import * as VueGoogleMaps from "vue2-google-maps"
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-
+import VueGamepad from 'vue-gamepad';
+ 
+Vue.use(VueGamepad);
 Vue.use(VueMaterial)
 Vue.config.productionTip = false
 Vue.use(VueGoogleMaps, {

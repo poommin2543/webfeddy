@@ -1,6 +1,13 @@
 <template>
   <div class="map-section">
     <button type="button" class="btn btn-primary" @click="noom">Go</button>
+    <div id="app">
+    <button type="button" class="btn btn-primary" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA">{{ textA }}</button>
+    <button type="button" class="btn btn-error" v-gamepad:button-x="pressedX" v-gamepad:button-x.released="releasedX">{{ textX }}</button>
+    <button type="button" class="btn btn-primary" v-gamepad:button-y="pressedY" v-gamepad:button-y.released="releasedY">{{ textY }}</button>
+    <button type="button" class="btn btn-errror" v-gamepad:button-b="pressedB" v-gamepad:button-b.released="releasedB">{{ textB }}</button>
+    <button type="button" class="btn btn-primary" v-gamepad:shoulder-left="pressedReset" v-gamepad:shoulder-left.released="releasedReset" v-on:click="pressedReset" >{{ textLB }}</button>
+  </div> 
     <!-- <gmap-map
       :center="center"
       :zoom="16.5"
@@ -35,8 +42,12 @@ var la = 14.875811571268388;
 var long = 102.01502828868293;
 var la_User = 14.875811571268388;
 var long_User = 102.01502828868293;
+var db = firebaseApp.database();
 export default {
   name: "DrawGoogleMap",
+  firebase: {
+    control: db.ref("Rover1/control"),
+  },
   data: function() {
     // let mapMarker ="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjMiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAyMyAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMyAxMS41QzIzIDIxLjUgMTEuNSAyOC41IDExLjUgMjguNUMxMS41IDI4LjUgMCAyMS41IDAgMTEuNUMwIDUuMTQ4NzMgNS4xNDg3MyAwIDExLjUgMEMxNy44NTEzIDAgMjMgNS4xNDg3MyAyMyAxMS41WiIgZmlsbD0iI0M3MDYyOSIvPg0KPGNpcmNsZSBjeD0iMTEuNSIgY3k9IjExLjUiIHI9IjUuNSIgZmlsbD0iIzgxMDAxNyIvPg0KPC9zdmc+DQo=";
     // let iconCar ="http://maps.google.com/mapfiles/kml/shapes/cabs.png";
@@ -47,6 +58,11 @@ export default {
     
     return {
       // mapMarker,
+      textA: "A",
+      textB: "B",
+      textX: "X",
+      textY: "Y",
+      textLB: "Reset",
       mapMarkerActive,
       iconCar,
       iconUser,
@@ -80,6 +96,16 @@ export default {
 },
   mounted() {
     this.setLocationLatLng();
+    // this.dbRefjoy.set({
+    //   backword: 1
+    // });
+    this.dbRefjoy.on('value', ss => {
+          for (const [key, value] of Object.entries(ss.val())) {
+            console.log(`${key}: ${value}`);
+          }
+
+      })
+
     this.dbRef.on('value', ss => {
           for (const [key, value] of Object.entries(ss.val())) {
             if (key == "latitude"){
@@ -145,9 +171,108 @@ export default {
   },
  
   methods: {
+    pressedA(e) {
+      this.textA = "Click";
+      console.log(`pressA`, e);
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 1,
+        right: 0,
+        left: 0
+         });
+    },
+    releasedA() {
+      this.textA = "A";
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    pressedX(e) {
+      this.textX = "Click";
+      console.log(`pressX`, e);
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 1
+         });
+      
+    },
+    releasedX() {
+      this.textX = "X";
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    pressedY(e) {
+      this.textY = "Click";
+      console.log(`pressY`, e);
+      this.dbRefjoy.set({
+        forword: 1,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    releasedY() {
+      this.textY = "Y";
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    pressedB(e) {
+      this.textB = "Click";
+      console.log(`pressB`, e);
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 1,
+        left: 0
+         });
+    },
+    releasedB() {
+      this.textB = "B";
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    pressedReset(e) {
+      this.textLB = "Click";
+      console.log(`pressLB`, e);
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
+    releasedReset() {
+      this.textLB = "Reset";
+      this.dbRefjoy.set({
+        forword: 0,
+        backword: 0,
+        right: 0,
+        left: 0
+         });
+    },
     noom(){
         console.log("Hi!!")
         console.log(this.aDouble)
+        this.dbRefjoy.push({
+         backword: 1
+         });
         // console.log(coordinates)
     },
     noss(){
@@ -203,11 +328,13 @@ export default {
       // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
       this.dbRef = firebaseApp.database().ref('locationCar')
       this.dbRef1 = firebaseApp.database().ref('location')
+      this.dbRefjoy = firebaseApp.database().ref('Rover1/control')
   },
   beforeDestroy() {
       // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
       this.dbRef.off()
       this.dbRef1.off()
+      this.dbRefjoy.off()
   }
 };
 </script>
