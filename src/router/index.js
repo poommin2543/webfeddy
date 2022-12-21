@@ -22,6 +22,11 @@ const routes = [
     path: '/Test',
     name: 'Test',
     component: () => import('../views/PushdataView.vue')
+  },
+  {
+    path: '/MultiCamera',
+    name: 'MultiCamera',
+    component: () => import('../components/Muticamera.vue')
   }
 ]
 
