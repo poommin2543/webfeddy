@@ -27,6 +27,11 @@ const routes = [
     path: '/MultiCamera',
     name: 'MultiCamera',
     component: () => import('../components/Muticamera.vue')
+  },
+  {
+    path: '/Mqtt',
+    name: 'Mqtt',
+    component: () => import('../components/Mqttjs.vue')
   }
 ]
 
