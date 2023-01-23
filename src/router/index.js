@@ -2,6 +2,17 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HomehomeView from '../views/HomehomeView.vue'
+import { BootstrapVue } from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+// import VueSidebarMenu from "vue-sidebar-menu";
+// import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
+// import VueSidebarMenu from 'vue-sidebar-menu'
+// import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+// Vue.use(VueSidebarMenu)
+
+Vue.use(BootstrapVue);
+// Vue.use(VueSidebarMenu);
 Vue.use(VueRouter)
 
 const routes = [

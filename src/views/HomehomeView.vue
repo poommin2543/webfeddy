@@ -1,30 +1,47 @@
 <template>
-    <!-- <div class="home"> -->
-        <div class="v1">
-            <p>noom</p>
-        </div> 
-    <!-- </div> -->
-  </template>
-  
-  <script>
-  // @ is an alias to /src
- 
-  export default {
-    name: 'HomehomeView',
-    components: {
-     
-    }
+  <div class="v1403_24071">
+    <div class="name"></div>
+    
+    <!-- <div class="name"></div> -->
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+
+export default {
+  name: 'HomehomeView',
+  components: {
+
   }
-  </script>
-  <style>* {
-    box-sizing: border-box;
-  }
-  body {
-    font-size: 14px;
-  }
-  v1{
-    background: rgba(0,0,0,1);
-    width: 1000px;
-    height: 607px;
-  }
-  </style>
+}
+</script>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 14px;
+}
+
+.v1403_24071 {
+  width: 100%;
+  height: 1080px;
+  background: rgba(1, 1, 1, 1);
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+
+.name {
+  color: #fff;
+}
+
+.name {
+  color: #fff;
+}
+
+</style>
