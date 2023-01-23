@@ -305,8 +305,8 @@ import firebaseApp from './firebase'
     
     created() {
         // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
-        this.dbRef = firebaseApp.database().ref('locationCar')
-        this.dbRef1 = firebaseApp.database().ref('location')
+        this.dbRef = firebaseApp.database().ref('Rover1/location/rover')
+        this.dbRef1 = firebaseApp.database().ref('Rover1/location/user')
 
     },
 
