@@ -63,7 +63,7 @@
                     <p class="title">Rover No.004</p>
                     <!-- <p class="title">CEO & Founder, Example</p> -->
                     <!-- <p>Harvard University</p> -->
-                    <!-- <a href="#"><i class="fa fa-dribbble"></i></a>
+                    <!-- < a href="#"><i class="fa fa-dribbble"></i></>
                     <a href="#"><i class="fa fa-twitter"></i></a>
                     <a href="#"><i class="fa fa-linkedin"></i></a>
                     <a href="#"><i class="fa fa-facebook"></i></a> -->
@@ -85,10 +85,16 @@
                 </div>
 
             </div>
-            
-            <div class="profile">
-                <router-link to="/home">Home</router-link>
+            <div >
+                <button type="button" class="buttondrive">Auto</button>
             </div>
+            <div >
+                <button type="button" class="buttondrive">Light</button>
+            </div>
+            <!-- <div class="profile">
+                <router-link to="/home">Home</router-link>
+            </div> -->
+            
         </div>
     </div>
 </template>
@@ -129,6 +135,10 @@ export default {
 
         //! Profile detailes
         profileImg: {
+            type: String,
+            default: require('../assets/img/poommin.jpg'),
+        },
+        LogoImg: {
             type: String,
             default: require('../assets/img/poommin.jpg'),
         },
@@ -563,17 +573,19 @@ body {
     text-align: center;
     opacity: 1;
 }
+
 .rcorners1 {
-  border-radius: 25px;
-  background: #ffffff;
-  margin: auto;
-  max-width: 200px;
-  /* max-height: 150px; */
-  text-align: center;
-  /* padding: 20px;
+    border-radius: 25px;
+    background: #ffffff;
+    margin: auto;
+    max-width: 200px;
+    /* max-height: 150px; */
+    text-align: center;
+    /* padding: 20px;
   width: 200px; */
-  height: 230px;
+    height: 230px;
 }
+
 .rcorners2 {
     border-radius: 25px;
     margin: auto;
@@ -593,9 +605,37 @@ body {
     color: rgb(14, 13, 13);
     font-size: 18px;
 }
+
 .titleheader {
     color: rgb(255, 255, 255);
     font-size: 25px;
+}
+
+.buttondrive {
+    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    background-color: #ffffff;
+    border-radius: 22px;
+    /* display: inline-block; */
+    cursor: pointer;
+    color: #404040;
+    font-family: Arial;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 16px 31px;
+    /* text-decoration: none; */
+    /* text-shadow: 0px 0px 0px #ffffff; */
+    max-width: 200px;
+    /* margin: auto; */
+}
+
+.buttondrive:hover {
+    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    background-color: #ffffff;
+}
+
+.buttondrive:active {
+    position: relative;
+    top: 1px;
 }
 
 /* button {
