@@ -1,9 +1,6 @@
 <template>
-
     <div class="sidebar" :class="isOpened ? 'open' : ''" :style="cssVars">
-
         <div class="logo-details" style="margin: 6px 14px 0 14px;">
-
             <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon">
             <i v-else class="bx icon" :class="menuIcon" />
             <div class="logo_name">
@@ -14,6 +11,29 @@
 
         <div
             style="display: flex ; flex-direction:column; justify-content: space-between; flex-grow: 1; max-height: calc(100% - 60px); ">
+            <!-- <div
+        id="my-scroll"
+        style="margin: 6px 14px 0 14px;"
+      >
+        <ul
+          class="nav-list"
+          style="overflow: visible;"
+        >
+          <li
+            v-if="isSearch"
+            @click="isOpened = true"
+          >
+            <i class="bx bx-search" />
+            <input
+              type="text"
+              :placeholder="searchPlaceholder"
+              @input="$emit('search-input-emit', $event.target.value)"
+            >
+            <span class="tooltip">{{ searchTooltip }}</span>
+          </li>
+        </ul>
+      </div> -->
+
             <div v-if="isLoggedIn" class="profile">
                 <div class="profile-details">
                     <img v-if="profileImg" :src="profileImg" alt="profileImg">
@@ -27,66 +47,70 @@
                         </div>
                     </div>
                 </div>
+                <!-- button logout -->
                 <i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" />
             </div>
-
+            <!-- <div class="profile">
+      <router-link to="/Streaming">Streaming</router-link>
+      </div> -->
             <div>
                 <p class="titleheader"> Rover list</p>
                 <div class="cardframe blackcardframe">
-
-                    <v-card class="mx-auto" max-width="300" tile>
-                        <v-list shaped>
-                            <!-- <v-subheader>REPORTS</v-subheader> -->
-                            <v-list-item-group v-model="selectedItem" color="primary">
-                                <v-list-item v-for="(item, i) in items" :key="i">
-                                    <!-- <v-list-item-icon>
-                                        <v-icon v-text="item.icon"></v-icon>
-                                    </v-list-item-icon> -->
-                                    <v-list-item-content>
-                                        <p>{{ item.text }}</p>
-                                        <!-- <v-list-item-title v-text="item.text"></v-list-item-title> -->
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list-item-group>
-                        </v-list>
-                    </v-card>
-                    <!-- <p class="title">Rover No.001</p> -->
-
-
+                    <!-- <img src="img.jpg" alt="John" style="width:70%"> -->
+                    <h3></h3>
+                    <p class="title">Rover No.001</p>
+                    <p class="title">Rover No.002</p>
+                    <p class="title">Rover No.003</p>
+                    <p class="title">Rover No.004</p>
+                    <!-- <p class="title">CEO & Founder, Example</p> -->
+                    <!-- <p>Harvard University</p> -->
+                    <!-- < a href="#"><i class="fa fa-dribbble"></i></>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                    <a href="#"><i class="fa fa-facebook"></i></a> -->
+                    <!-- <p><button>Contact</button></p> -->
                 </div>
 
             </div>
             <div>
                 <div class="cardframe Trancardframe">
-
+                    <!-- <img src="img.jpg" alt="John" style="width:70%"> -->
+                    <h1>John Doe</h1>
                     <p class="title">CEO & Founder, Example</p>
-
+                    <!-- <p>Harvard University</p> -->
+                    <!-- <a href="#"><i class="fa fa-dribbble"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                    <a href="#"><i class="fa fa-facebook"></i></a> -->
+                    <!-- <p><button>Contact</button></p> -->
                 </div>
 
             </div>
             <div>
                 <p>{{ isActive }}</p>
-                <button type="button" class="buttondrive" @click="isActive = !isActive">Auto</button>
+                <button type="button" class="buttondrive" @click="clicked">Auto</button>
+                <button @click="isActive = !isActive">Toggle</button>
+
+                <h1 v-if="isActive">Vue is awesome!</h1>
+                <h1 v-else>Oh no 😢</h1>
             </div>
+            <!-- <div v-if="isActive"> -->
             <div v-if="isActive">
                 <button type="button" class="buttondrive" @click="clicked">Light</button>
             </div>
-
+            <!-- <div class="profile">
+                <router-link to="/home">Home</router-link>
+            </div> -->
 
         </div>
     </div>
 </template>
 
 <script>
-import firebaseApp from './firebase'
-// import ComponentA from '../components/ListRover.vue'
-
 export default {
     name: 'SidebarMenuAkahon',
     return: {
-        //         components: {
-        //             ComponentA: ComponentA
-        //   }
+        isActive: true,
     },
     props: {
         //! Menu settings
@@ -94,7 +118,10 @@ export default {
             type: Boolean,
             default: true,
         },
-
+        // menuTitle: {
+        //   type: String,
+        //   default: 'Akahon',
+        // },
         isBottonAuto: {
             type: Boolean,
             default: false,
@@ -186,36 +213,14 @@ export default {
             type: String,
             default: '#fff',
         },
-
     },
     data() {
         return {
-            isOpened: true,
-            isActive: true,
-            rover: "",
-            selectedItem: 1,
-            items: [
-                // { text: 'Real-Time', icon: 'mdi-clock' },
-                // { text: 'Audience', icon: 'mdi-account' },
-                // { text: 'Conversions', icon: 'mdi-flag' },
-            ],
-            itemrover:{}
+            isOpened: false
         }
     },
     mounted() {
         this.isOpened = this.isMenuOpen
-        this.dbRef.on('value', ss => {
-            // console.log(ss.val());
-            this.items =[]
-            // this.items.remove()
-            for (const [key] of Object.entries(ss.val())) {
-                // console.log(`${key}: ${value}`);
-                console.log(`${key}`);
-               
-                this.items.push({
-                    text:key,});
-            }
-        })
     },
     methods: {
         toggle() {
@@ -256,31 +261,30 @@ export default {
         isOpened() {
             window.document.body.style.paddingLeft = this.isOpened && this.isPaddingLeft ? this.menuOpenedPaddingLeftBody : this.menuClosedPaddingLeftBody
         }
-    },
-    created() {
-        // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
-        this.dbRef = firebaseApp.database().ref('/')
-        // this.dbRef1 = firebaseApp.database().ref('Rover1/location/user')
-
-    },
-
-
-
-    beforeDestroy() {
-        // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
-        this.dbRef.off()
-        // this.dbRef1.off()
     }
 }
 </script>
 
 <style>
 /* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url('https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css');
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
+body {
+    transition: all 0.5s ease;
+}
 
-
-
+.menu-logo {
+    width: 30px;
+    margin: 0 10px 0 10px;
+}
 
 .sidebar {
     position: relative;
@@ -667,6 +671,22 @@ export default {
     top: 1px;
 }
 
+/* button {
+    border: none;
+    border-radius: 70px;
+    outline: 10;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 70%;
+    font-size: 18px;
+    opacity: 0.78;
+    
+} */
+
 a {
     text-decoration: none;
     font-size: 22px;
@@ -676,5 +696,21 @@ a {
 button:hover,
 a:hover {
     opacity: 1.5;
+}
+
+/* #my-scroll::-webkit-scrollbar-thumb{
+    background-color: red;
+    border-radius:5px 
+  }
+  #my-scroll::-webkit-scrollbar-button:vertical:start:decrement{
+    display:none;
+  }
+  #my-scroll::-webkit-scrollbar-button:vertical:end:increment{
+    display:none;
+  } */
+@media (max-width: 420px) {
+    .sidebar li .tooltip {
+        display: none;
+    }
 }
 </style>

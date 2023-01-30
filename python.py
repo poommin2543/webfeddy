@@ -59,7 +59,8 @@ gst_str_rtp = "appsrc ! video/x-raw, format=I420 ! queue ! videoconvert ! \
         udpsink host=34.143.225.243 port=8004"
 
 # Create two video capture objects, one for the RTSP stream and one for the local webcam. 
-frame0 = cv2.VideoCapture("rtsp://lordtopzz01:Siripong01@192.168.50.58:554/stream1", cv2.CAP_FFMPEG)
+# frame0 = cv2.VideoCapture("rtsp://lordtopzz01:Siripong01@192.168.50.58:554/stream1", cv2.CAP_FFMPEG)
+frame0 = cv2.VideoCapture("rtsp://lordtopzz01:Siripong01@192.168.50.58:554/stream1")
 # frame1 = cv2.VideoCapture("rtsp://lordtopzz01:Siripong01@192.168.50.59:554/stream1", cv2.CAP_FFMPEG)
 # frame1 = cv2.VideoCapture(0)
 # fourcc = cv2.VideoWriter_fourcc(*'H264')
