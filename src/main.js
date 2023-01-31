@@ -7,7 +7,9 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import VueGamepad from 'vue-gamepad';
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
+import Vuetify from 'vuetify'
 
+Vue.use(Vuetify)
 Vue.component('vue-sidebar-menu-akahon', VueSidebarMenuAkahon);
 Vue.use(VueGamepad);
 Vue.use(VueMaterial)

@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" />
+                <!-- <i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /> -->
             </div>
 
             <div>
@@ -35,12 +35,11 @@
                 <div class="cardframe blackcardframe">
                     <v-list>
                         <div class="center">
-                            <!-- <v-subheader></v-subheader> -->
+                            <!-- <v-subheader>REPORTS</v-subheader> -->
                             <v-list-item-group v-model="selectedItem" color="primary">
                                 <v-list-item v-for="(item, i) in items" :key="i" @click="updateSelected(item)">
                                     <v-list-item-content>
-                                        <!-- <v-list-item-title v-text="item.text"></v-list-item-title> -->
-                                        <p>{{ item.text }}</p>
+                                        <v-list-item-title v-text="item.text"></v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-list-item-group>
@@ -52,11 +51,11 @@
                 </div>
                 <div>
                     <div class="cardframe blackcardframe">
-                        <!-- <p>Rover status</p> -->
+                        <p>Rover status</p>
                         <div class="cardframemini Trancardframe">
                             
                         </div>
-                        <!-- <p>Order tatus</p> -->
+                        <p>Order tatus</p>
                         <div class="cardframeminize Trancardframe">
 
                         </div>
@@ -68,16 +67,13 @@
                     <button type="button" class="buttondrive" :class="isOpened ? 'buttondrive' : 'buttondriveclose'"
                         @click="isActive = !isActive">Auto</button>
                     <div v-if="isActive">
-                        <button type="button" class="buttondrive" @click="clicked">Joy</button>
+                        <button type="button" class="buttondrive" @click="clicked">Light</button>
                     </div>
                 </div>
 
             </div>
-            <div class="center">
 
-                <!-- <img  v-if="profileImg" :src="profileImg" alt="profileImg"> -->
-                
-            </div>
+
         </div>
     </div>
 </template>
@@ -196,7 +192,7 @@ export default {
     data() {
         return {
             isOpened: true,
-            isActive: false,
+            isActive: true,
             rover: "",
             selectedItem: 1,
             items: [
@@ -210,7 +206,6 @@ export default {
         }
     },
     mounted() {
-       
         this.isOpened = this.isMenuOpen
         this.dbRef.on('value', ss => {
             // console.log(ss.val());
@@ -513,19 +508,12 @@ export default {
 }
 
 .sidebar div img {
-    height: 60px;
+    height: 45px;
     width: 45px;
     object-fit: cover;
     border-radius: 6px;
     margin-right: 10px;
 }
-/* .logo{
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-right: 60px;
-} */
 
 .sidebar div.profile .name,
 .sidebar div.profile .job {
