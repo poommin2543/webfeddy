@@ -40,7 +40,7 @@
                                 <v-list-item v-for="(item, i) in items" :key="i" @click="updateSelected(item)">
                                     <v-list-item-content>
                                         <!-- <v-list-item-title v-text="item.text"></v-list-item-title> -->
-                                        <p>{{ item.text }}</p>
+                                        <p>{{ item.Name }}</p>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-list-item-group>
@@ -54,12 +54,23 @@
                     <div class="cardframe blackcardframe">
                         <!-- <p>Rover status</p> -->
                         <div class="cardframemini Trancardframe">
-                            
+
+                            <p>Rover : {{ namerover }}</p>
+                            <p>Status : {{ StatusRover }}</p>
+                            <p>Battery : {{ Battery }}</p>
+                            <p>Location: </p>
+                            <p></p>
+
+
                         </div>
                         <!-- <p>Order tatus</p> -->
                         <div class="cardframeminize Trancardframe">
-
+                            <p>Order No. : </p>
+                            <p>Status : </p>
+                            <p>Time Estima : </p>
+                            <p>Location: </p>
                         </div>
+
 
                     </div>
 
@@ -68,7 +79,7 @@
                     <button type="button" class="buttondrive" :class="isOpened ? 'buttondrive' : 'buttondriveclose'"
                         @click="isActive = !isActive">Auto</button>
                     <div v-if="isActive">
-                        <button type="button" class="buttondrive" @click="clicked">Joy</button>
+                        <button type="button" class="buttondrive" @click="doSubscribe">Joy</button>
                     </div>
                 </div>
 
@@ -76,7 +87,7 @@
             <div class="center">
 
                 <!-- <img  v-if="profileImg" :src="profileImg" alt="profileImg"> -->
-                
+
             </div>
         </div>
     </div>
@@ -85,6 +96,7 @@
 <script>
 import firebaseApp from './firebase'
 // import ComponentA from '../components/ListRover.vue'
+import mqtt from 'mqtt/dist/mqtt'
 
 export default {
     name: 'SidebarMenuAkahon',
@@ -205,12 +217,57 @@ export default {
                 // { text: 'Conversions', icon: 'mdi-flag' },
             ],
             itemrover: {},
+            namerover: "N/a",
+            StatusRover: "N/a",
+            Battery:"N/a",
+            timeone: 0,
+            timemqtt: 0,
+            connection: {
+                protocol: 'ws',
+                host: '34.143.225.243',
+                // ws: 8083; wss: 8084
+                port: 9001,
+                endpoint: '/mqtt',
+                // for more options, please refer to https://github.com/mqttjs/MQTT.js#mqttclientstreambuilder-options
+                clean: true,
+                connectTimeout: 30 * 1000, // ms
+                reconnectPeriod: 4000, // ms
+                clientId:
+                    'emqx_vue_' +
+                    Math.random()
+                        .toString(16)
+                        .substring(2, 8),
+                // auth
+                username: 'test',
+                password: 'Test123',
+            },
+            subscription: {
+                qos: 0,
+                topic: 'rover1/status',
+            },
+            publish: {
 
+                topic: 'rover1/status',
+                qos: 0,
+                payload: 'Hi',
+            },
+            receiveNews: '',
+            qosList: [0, 1, 2],
+            client: {
+                connected: false,
+            },
+            subscribeSuccess: false,
+            connecting: false,
+            retryTimes: 0,
+            refBattery: false,
 
         }
     },
     mounted() {
-       
+        this.createConnection()
+
+        // this.doSubscribe()
+        this.interval = setInterval(() => this.Checkonline(), 3000);
         this.isOpened = this.isMenuOpen
         this.dbRef.on('value', ss => {
             // console.log(ss.val());
@@ -218,10 +275,10 @@ export default {
             // this.items.remove()
             for (const [key] of Object.entries(ss.val())) {
                 // console.log(`${key}: ${value}`);
-                console.log(`${key}`);
+                // console.log(`${key}`);
 
                 this.items.push({
-                    text: key,
+                    Name: key,
                 });
             }
         })
@@ -244,8 +301,145 @@ export default {
             // this.isActive = this.isActive ? false : true;
         },
         updateSelected(totoal) {
-            console.log(totoal);
-        }
+            console.log(totoal)
+            this.doUnSubscribe()
+            if (this.refBattery == true){
+                this.dbRefBattery.off()
+                this.refBattery = false;
+            }
+            var ref = "";
+            // this.yourFunction()
+            for (const [key, value] of Object.entries(totoal)) {
+                if (key === 'Name') {
+                    this.namerover = value;
+                    this.subscription = [];
+                    // this.subscription.push({
+                    //     // topic: value.toLowerCase() + '/status',
+                    //     topic:  '/status',
+                    //     qos: 0,
+                    // })
+                    this.subscription = {
+                        qos: 0,
+                        topic: value.toLowerCase() + '/status'
+                    }
+                    this.doSubscribe();
+                    ref = "/"+ value + '/status'
+                    this.dbRefBattery = firebaseApp.database().ref(ref)
+                    this.refBattery =true;
+                    this.dbRefBattery.on('value', ss => {
+                        for (const [key,value] of Object.entries(ss.val())) {
+                            // console.log(`${key}: ${value}`);
+                            if (key == 'Battery')
+                            {
+
+                            console.log(`${key}: ${value}`);
+                            this.Battery = value + ' %'
+                            }
+                        }
+                    })
+                }
+                // if (this.subscribeSuccess === false) {
+                //     this.doSubscribe();
+                //     console.log(this.subscribeSuccess)
+                // }
+                // else {
+                //     this.doUnSubscribe();
+                //     console.log(this.subscribeSuccess)
+                // }
+                
+            }
+
+        },
+        Checkonline() {
+
+            if ((this.timenow() - this.timemqtt) > 0.1) {
+                // console.log("Offline", (this.timenow() - this.timemqtt) * 60)
+                this.StatusRover = "offline"
+            }
+
+        },
+        timenow() {
+
+            var one_day = 60 * 60 * 24
+            const today = new Date();
+            // this.timeone=today/one_day
+            return today / one_day
+            // console.log(this.timeone)
+        },
+        initData() {
+            this.client = {
+                connected: false,
+            }
+            this.retryTimes = 0
+            this.connecting = false
+            this.subscribeSuccess = false
+        },
+        handleOnReConnect() {
+            this.retryTimes += 1
+            if (this.retryTimes > 5) {
+                try {
+                    this.client.end()
+                    this.initData()
+                    this.$message.error('Connection maxReconnectTimes limit, stop retry')
+                } catch (error) {
+                    this.$message.error(error.toString())
+                }
+            }
+        },
+        createConnection() {
+            try {
+                this.connecting = true
+                const { protocol, host, port, endpoint, ...options } = this.connection
+                const connectUrl = `${protocol}://${host}:${port}${endpoint}`
+                this.client = mqtt.connect(connectUrl, options)
+                if (this.client.on) {
+                    this.client.on('connect', () => {
+                        this.connecting = false
+                        console.log('Connection succeeded!')
+                    })
+                    this.client.on('reconnect', this.handleOnReConnect)
+                    this.client.on('error', error => {
+                        console.log('Connection failed', error)
+                    })
+                    this.client.on('message', (topic, message) => {
+                        this.receiveNews = this.receiveNews.concat(message)
+                        console.log(`Received message ${message} from topic ${topic}`)
+                        // console.log(message)
+                        this.StatusRover = message
+                        // this.text = "OFF"
+                        this.timemqtt = this.timenow()
+                    })
+
+                }
+            } catch (error) {
+                this.connecting = false
+                console.log('mqtt.connect error', error)
+            }
+        },
+        // subscribe topic
+        // https://github.com/mqttjs/MQTT.js#mqttclientsubscribetopictopic-arraytopic-object-options-callback
+        doSubscribe() {
+            const { topic, qos } = this.
+                subscription
+            this.client.subscribe(topic, { qos }, (error, res) => {
+                if (error) {
+                    console.log('Subscribe to topics error', error)
+                    return
+                }
+                this.subscribeSuccess = true
+                console.log('Subscribe to topics res', res)
+            })
+        },
+        // unsubscribe topic
+        // https://github.com/mqttjs/MQTT.js#mqttclientunsubscribetopictopic-array-options-callback
+        doUnSubscribe() {
+            const { topic } = this.subscription
+            this.client.unsubscribe(topic, error => {
+                if (error) {
+                    console.log('Unsubscribe error', error)
+                }
+            })
+        },
     },
     computed: {
         cssVars() {
@@ -270,8 +464,10 @@ export default {
         }
     },
     created() {
+        console.log("created()");
         // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
         this.dbRef = firebaseApp.database().ref('/')
+        // this.dbRefBattery = firebaseApp.database().ref('/Rover1/status')
         // this.dbRef1 = firebaseApp.database().ref('Rover1/location/user')
 
     },
@@ -279,8 +475,10 @@ export default {
 
 
     beforeDestroy() {
+        console.log("beforeDestroy()");
         // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
         this.dbRef.off()
+        this.dbRefBattery.off()
         // this.dbRef1.off()
     }
 }
@@ -519,6 +717,7 @@ export default {
     border-radius: 6px;
     margin-right: 10px;
 }
+
 /* .logo{
     height: 60px;
     width: 60px;

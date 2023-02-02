@@ -53,7 +53,10 @@
                     <div class="cardframe blackcardframe">
                         <p>Rover status</p>
                         <div class="cardframemini Trancardframe">
-                            
+                            <p>Noom</p>
+                            <div class="title">
+                                <p>Noom</p>
+                            </div>
                         </div>
                         <p>Order tatus</p>
                         <div class="cardframeminize Trancardframe">
