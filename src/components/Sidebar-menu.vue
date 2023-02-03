@@ -58,7 +58,7 @@
                             <p>Rover : {{ namerover }}</p>
                             <p>Status : {{ StatusRover }}</p>
                             <p>Battery : {{ Battery }}</p>
-                            <p>Location: </p>
+                            <p>Velocity: {{ Velocity }}</p>
                             <p></p>
 
 
@@ -220,6 +220,7 @@ export default {
             namerover: "N/a",
             StatusRover: "N/a",
             Battery:"N/a",
+            Velocity:"N/a",
             timeone: 0,
             timemqtt: 0,
             connection: {
@@ -332,9 +333,16 @@ export default {
                             if (key == 'Battery')
                             {
 
-                            console.log(`${key}: ${value}`);
+                            // console.log(`${key}: ${value}`);
                             this.Battery = value + ' %'
                             }
+                            if (key == 'velocity')
+                            {
+
+                            // console.log(`${key}: ${value}`);
+                            this.Velocity = value + ' m/s'
+                            }
+
                         }
                     })
                 }
