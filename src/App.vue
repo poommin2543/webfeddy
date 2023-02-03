@@ -33,6 +33,33 @@ nav a.router-link-exact-active {
 </style> -->
 <template>
   <div>
+    <!-- <sidebar-menu-akahon 
+      @search-input-emit="search"
+      
+    /> -->
+    <router-view/>
+  </div>
+</template>
+
+<script>
+// import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
+
+// export default {
+//   name: "App",
+//   components: {
+//     SidebarMenuAkahon,
+//   },
+//   methods: {
+//     // search(val) {
+      
+//     // }
+//   }
+// }
+</script>
+
+<style></style>
+<!-- <template>
+  <div>
     <sidebar-menu-akahon 
       @search-input-emit="search"
       
@@ -57,4 +84,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style></style> -->

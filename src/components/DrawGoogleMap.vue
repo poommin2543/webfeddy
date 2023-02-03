@@ -1,5 +1,11 @@
 <template>
     <div class="map-section">
+      <sidebar-menu-akahon />
+      <!-- <sidebar-menu-akahon 
+      @search-input-emit="search"
+      
+    /> -->
+
       <!-- <h2>Vue Js Google Maps with Multiple Markers </h2> -->
       <!-- <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p> -->
       <!-- <GmapAutocomplete
@@ -62,7 +68,7 @@
 
 
 import firebaseApp from './firebase'
-
+import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
   // var nnn = 14.875811571268388;
   var la = 14.875811571268388;
   var long = 102.01502828868293;
@@ -70,10 +76,20 @@ import firebaseApp from './firebase'
   var long_User = 102.01502828868293;
   export default {
     name: "DrawGoogleMap",
+    components: {
+    SidebarMenuAkahon,
+  },
+  props: {
+    LogoImg: {
+            type: String,
+            default: require('../assets/img/class_front.png'),
+        },
+  },
     data: function() {
       // let mapMarker ="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjMiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAyMyAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMyAxMS41QzIzIDIxLjUgMTEuNSAyOC41IDExLjUgMjguNUMxMS41IDI4LjUgMCAyMS41IDAgMTEuNUMwIDUuMTQ4NzMgNS4xNDg3MyAwIDExLjUgMEMxNy44NTEzIDAgMjMgNS4xNDg3MyAyMyAxMS41WiIgZmlsbD0iI0M3MDYyOSIvPg0KPGNpcmNsZSBjeD0iMTEuNSIgY3k9IjExLjUiIHI9IjUuNSIgZmlsbD0iIzgxMDAxNyIvPg0KPC9zdmc+DQo=";
       // let iconCar ="http://maps.google.com/mapfiles/kml/shapes/cabs.png";
-      let iconCar ="https://i.postimg.cc/3N0bcm0F/Picture-Car.png";
+      let iconCar =require('../assets/img/class_front.png');
+      // let iconCar ="https://i.postimg.cc/3N0bcm0F/Picture-Car.png";
       // let mapMarkerActive = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjMiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAyMyAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMyAxMS41QzIzIDIxLjUgMTEuNSAyOC41IDExLjUgMjguNUMxMS41IDI4LjUgMCAyMS41IDAgMTEuNUMwIDUuMTQ4NzMgNS4xNDg3MyAwIDExLjUgMEMxNy44NTEzIDAgMjMgNS4xNDg3MyAyMyAxMS41WiIgZmlsbD0iIzMzMzMzMyIvPg0KPGNpcmNsZSBjeD0iMTEuNSIgY3k9IjExLjUiIHI9IjUuNSIgZmlsbD0iYmxhY2siLz4NCjwvc3ZnPg0K";
       let mapMarkerActive = "http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png";
       let iconUser = "https://i.postimg.cc/bNC9tsGz/icons8-iphone-se-80.png";
