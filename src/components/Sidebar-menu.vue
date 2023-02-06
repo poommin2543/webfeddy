@@ -76,10 +76,22 @@
 
                 </div>
                 <div class="cardbutton">
-                    <button type="button" class="buttondrive" :class="isOpened ? 'buttondrive' : 'buttondriveclose'"
-                        @click="isActive = !isActive">Auto</button>
+                    <button type="button" class="buttondrive" :class="isActive ? 'buttondrive' : 'buttondriveclose'"
+                        @click="isActive = !isActive">{{ isActiveJoy }}</button>
                     <div v-if="isActive">
-                        <button type="button" class="buttondrive" @click="doSubscribe">Joy</button>
+                        <button type="button" class="buttondrive" @click="joystick()">Joy</button>
+                    </div>
+                    <div v-if="isActiveJoy">
+                        <button type="button" v-gamepad:button-a="pressedA"
+                            v-gamepad:button-a.released="releasedA"></button>
+                        <button type="button" v-gamepad:button-x="pressedX"
+                            v-gamepad:button-x.released="releasedX"></button>
+                        <button type="button" v-gamepad:button-y="pressedY"
+                            v-gamepad:button-y.released="releasedY"></button>
+                        <button type="button" v-gamepad:button-b="pressedB"
+                            v-gamepad:button-b.released="releasedB"></button>
+                        <button type="button" v-gamepad:shoulder-left="pressedReset"
+                            v-gamepad:shoulder-left.released="releasedReset" v-on:click="pressedReset"></button>
                     </div>
                 </div>
 
@@ -209,6 +221,7 @@ export default {
         return {
             isOpened: true,
             isActive: false,
+            isActiveJoy: false,
             rover: "",
             selectedItem: 1,
             items: [
@@ -219,8 +232,8 @@ export default {
             itemrover: {},
             namerover: "N/a",
             StatusRover: "N/a",
-            Battery:"N/a",
-            Velocity:"N/a",
+            Battery: "N/a",
+            Velocity: "N/a",
             timeone: 0,
             timemqtt: 0,
             connection: {
@@ -261,6 +274,13 @@ export default {
             connecting: false,
             retryTimes: 0,
             refBattery: false,
+            refJoystick: false,
+            // Joy,
+            textA: "A",
+            textB: "B",
+            textX: "X",
+            textY: "Y",
+            textLB: "Reset",
 
         }
     },
@@ -304,11 +324,15 @@ export default {
         updateSelected(totoal) {
             console.log(totoal)
             this.doUnSubscribe()
-            if (this.refBattery == true){
+            if (this.refBattery == true) {
                 this.dbRefBattery.off()
                 this.refBattery = false;
             }
-            var ref = "";
+            if (this.refJoystick == true) {
+                this.dbRefJoystick.off()
+                this.refJoystick = false;
+            }
+            var refStatus = "";
             // this.yourFunction()
             for (const [key, value] of Object.entries(totoal)) {
                 if (key === 'Name') {
@@ -324,23 +348,22 @@ export default {
                         topic: value.toLowerCase() + '/status'
                     }
                     this.doSubscribe();
-                    ref = "/"+ value + '/status'
-                    this.dbRefBattery = firebaseApp.database().ref(ref)
-                    this.refBattery =true;
+                    refStatus = "/" + value + '/status'
+                    this.dbRefBattery = firebaseApp.database().ref(refStatus)
+                    
+                    this.refBattery = true;
                     this.dbRefBattery.on('value', ss => {
-                        for (const [key,value] of Object.entries(ss.val())) {
+                        for (const [key, value] of Object.entries(ss.val())) {
                             // console.log(`${key}: ${value}`);
-                            if (key == 'Battery')
-                            {
+                            if (key == 'Battery') {
 
-                            // console.log(`${key}: ${value}`);
-                            this.Battery = value + ' %'
+                                // console.log(`${key}: ${value}`);
+                                this.Battery = value + ' %'
                             }
-                            if (key == 'velocity')
-                            {
+                            if (key == 'velocity') {
 
-                            // console.log(`${key}: ${value}`);
-                            this.Velocity = value + ' m/s'
+                                // console.log(`${key}: ${value}`);
+                                this.Velocity = value + ' m/s'
                             }
 
                         }
@@ -354,7 +377,7 @@ export default {
                 //     this.doUnSubscribe();
                 //     console.log(this.subscribeSuccess)
                 // }
-                
+
             }
 
         },
@@ -447,6 +470,110 @@ export default {
                     console.log('Unsubscribe error', error)
                 }
             })
+        },
+        joystick() {
+            this.isActiveJoy = !this.isActiveJoy
+            if (this.isActiveJoy == true) {
+                        console.log("/" +this.namerover + '/control')
+                        this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
+                        this.refJoystick == true
+                    }
+        },
+        pressedA(e) {
+            this.textA = "Click";
+            console.log(`pressA`, e);
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 1,
+                right: 0,
+                left: 0
+            });
+        },
+        releasedA() {
+            this.textA = "A";
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        pressedX(e) {
+            this.textX = "Click";
+            console.log(`pressX`, e);
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 1
+            });
+
+        },
+        releasedX() {
+            this.textX = "X";
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        pressedY(e) {
+            this.textY = "Click";
+            console.log(`pressY`, e);
+            this.dbRefJoystick.set({
+                forword: 1,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        releasedY() {
+            this.textY = "Y";
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        pressedB(e) {
+            this.textB = "Click";
+            console.log(`pressB`, e);
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 1,
+                left: 0
+            });
+        },
+        releasedB() {
+            this.textB = "B";
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        pressedReset(e) {
+            this.textLB = "Click";
+            console.log(`pressLB`, e);
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
+        },
+        releasedReset() {
+            this.textLB = "Reset";
+            this.dbRefJoystick.set({
+                forword: 0,
+                backword: 0,
+                right: 0,
+                left: 0
+            });
         },
     },
     computed: {
@@ -889,11 +1016,11 @@ export default {
 }
 
 .buttondriveclose {
-    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
-    background-color: #ffffff;
+    background: linear-gradient(to bottom, #000000 5%, #000000 100%);
+    background-color: #000000;
     border-radius: 18px;
     /* cursor: pointer; */
-    color: #404040;
+    color: #e73f3f;
     font-family: Arial;
     font-size: 28px;
     font-weight: bold;

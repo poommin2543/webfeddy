@@ -229,6 +229,7 @@ import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
                 lat: la_User.toString(),
                 lng: long_User.toString()
               },
+              //                           
       }
             }
 
