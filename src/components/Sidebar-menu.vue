@@ -76,12 +76,19 @@
 
                 </div>
                 <div class="cardbutton">
-                    <button type="button" class="buttondrive" :class="isActive ? 'buttondrive' : 'buttondriveclose'"
-                        @click="isActive = !isActive">{{ isActiveJoy }}</button>
+                    <div v-if="isActive === true">
+                        <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
+                            @click="isActive = !isActive">Manual</button>
+                    </div>
+                    <div v-if="isActive === false">
+                        <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
+                            @click="isActive = !isActive">Auto</button>
+                    </div>
+
                     <div v-if="isActive">
                         <button type="button" class="buttondrive" @click="joystick()">Joy</button>
                     </div>
-                    <div v-if="isActiveJoy">
+                    <div v-if="isActiveJoy && isActive">
                         <button type="button" v-gamepad:button-a="pressedA"
                             v-gamepad:button-a.released="releasedA"></button>
                         <button type="button" v-gamepad:button-x="pressedX"
@@ -119,6 +126,7 @@ export default {
     },
     props: {
         //! Menu settings
+
         isMenuOpen: {
             type: Boolean,
             default: true,
@@ -336,6 +344,11 @@ export default {
             // this.yourFunction()
             for (const [key, value] of Object.entries(totoal)) {
                 if (key === 'Name') {
+                    // var decodedStringBtoA = value;
+
+                    // Encode the String
+                    var encodedStringBtoA = btoa(value);
+                    localStorage.setItem("name-Rover", encodedStringBtoA);
                     this.namerover = value;
                     this.subscription = [];
                     // this.subscription.push({
@@ -350,7 +363,7 @@ export default {
                     this.doSubscribe();
                     refStatus = "/" + value + '/status'
                     this.dbRefBattery = firebaseApp.database().ref(refStatus)
-                    
+
                     this.refBattery = true;
                     this.dbRefBattery.on('value', ss => {
                         for (const [key, value] of Object.entries(ss.val())) {
@@ -474,10 +487,10 @@ export default {
         joystick() {
             this.isActiveJoy = !this.isActiveJoy
             if (this.isActiveJoy == true) {
-                        console.log("/" +this.namerover + '/control')
-                        this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
-                        this.refJoystick == true
-                    }
+                console.log("/" + this.namerover + '/control')
+                this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
+                this.refJoystick == true
+            }
         },
         pressedA(e) {
             this.textA = "Click";
@@ -619,483 +632,5 @@ export default {
 }
 </script>
 
-<style>
-/* Google Font Link */
-
-
-
-
-
-
-.sidebar {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    min-height: min-content;
-    /* overflow-y: auto; */
-    width: 78px;
-    background: var(--bg-color);
-    /* padding: 6px 14px 0 14px; */
-    z-index: 99;
-    transition: all 0.5s ease;
-}
-
-.sidebar.open {
-    width: 250px;
-}
-
-.sidebar .logo-details {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.sidebar .logo-details .icon {
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.sidebar .logo-details .logo_name {
-    color: var(--logo-title-color);
-    font-size: 20px;
-    font-weight: 600;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.sidebar.open .logo-details .icon,
-.sidebar.open .logo-details .logo_name {
-    opacity: 1;
-}
-
-.sidebar .logo-details #btn {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    font-size: 22px;
-    transition: all 0.4s ease;
-    font-size: 23px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.5s ease;
-}
-
-.sidebar.open .logo-details #btn {
-    text-align: right;
-}
-
-.sidebar i {
-    color: var(--icons-color);
-    height: 60px;
-    min-width: 50px;
-    font-size: 28px;
-    text-align: center;
-    line-height: 60px;
-}
-
-.sidebar .nav-list {
-    margin-top: 20px;
-    /* margin-bottom: 60px; */
-    /* height: 100%; */
-    /* min-height: min-content; */
-}
-
-.sidebar li {
-    position: relative;
-    margin: 8px 0;
-    list-style: none;
-}
-
-.sidebar li .tooltip {
-    position: absolute;
-    top: -20px;
-    left: calc(100% + 15px);
-    z-index: 3;
-    background: var(--items-tooltip-color);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 400;
-    opacity: 0;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: 0s;
-}
-
-.sidebar li:hover .tooltip {
-    opacity: 1;
-    pointer-events: auto;
-    transition: all 0.4s ease;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.sidebar.open li .tooltip {
-    display: none;
-}
-
-.sidebar input {
-    font-size: 15px;
-    color: var(--serach-input-text-color);
-    font-weight: 400;
-    outline: none;
-    height: 50px;
-    width: 100%;
-    width: 50px;
-    border: none;
-    border-radius: 12px;
-    transition: all 0.5s ease;
-    background: var(--secondary-color);
-}
-
-.sidebar.open input {
-    padding: 0 20px 0 50px;
-    width: 100%;
-}
-
-.sidebar .bx-search {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    font-size: 22px;
-    background: var(--secondary-color);
-    color: var(--icons-color);
-}
-
-.sidebar.open .bx-search:hover {
-    background: var(--secondary-color);
-    color: var(--icons-color);
-}
-
-.sidebar .bx-search:hover {
-    background: var(--menu-items-hover-color);
-    color: var(--bg-color);
-}
-
-.sidebar li a {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    border-radius: 12px;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.4s ease;
-    background: var(--bg-color);
-}
-
-.sidebar li a:hover {
-    background: var(--menu-items-hover-color);
-}
-
-.sidebar li a .links_name {
-    color: var(--menu-items-text-color);
-    font-size: 15px;
-    font-weight: 400;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.4s;
-}
-
-.sidebar.open li a .links_name {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.sidebar li a:hover .links_name,
-.sidebar li a:hover i {
-    transition: all 0.5s ease;
-    color: var(--bg-color);
-}
-
-.sidebar li i {
-    height: 50px;
-    line-height: 50px;
-    font-size: 18px;
-    border-radius: 12px;
-}
-
-.sidebar div.profile {
-    position: relative;
-    height: 60px;
-    width: 78px;
-    /* left: 0;
-    bottom: 0; */
-    padding: 10px 14px;
-    background: var(--secondary-color);
-    transition: all 0.5s ease;
-    overflow: hidden;
-}
-
-.sidebar.open div.profile {
-    width: 250px;
-}
-
-.sidebar div .profile-details {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-}
-
-.sidebar div img {
-    height: 60px;
-    width: 45px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-right: 10px;
-}
-
-/* .logo{
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-right: 60px;
-} */
-
-.sidebar div.profile .name,
-.sidebar div.profile .job {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--menu-footer-text-color);
-    white-space: nowrap;
-}
-
-.sidebar div.profile .job {
-    font-size: 12px;
-}
-
-.sidebar .profile #log_out {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background: var(--secondary-color);
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-    border-radius: 0px;
-    transition: all 0.5s ease;
-}
-
-.sidebar.open .profile #log_out {
-    width: 50px;
-    background: var(--secondary-color);
-    opacity: 0;
-}
-
-.sidebar.open .profile:hover #log_out {
-    opacity: 1;
-}
-
-.sidebar.open .profile #log_out:hover {
-    opacity: 1;
-    color: red;
-}
-
-.sidebar .profile #log_out:hover {
-    color: red;
-}
-
-.home-section {
-    position: relative;
-    background: var(--home-section-color);
-    min-height: 100vh;
-    top: 0;
-    left: 78px;
-    width: calc(100% - 78px);
-    transition: all 0.5s ease;
-    z-index: 2;
-}
-
-.sidebar.open~.home-section {
-    left: 250px;
-    width: calc(100% - 250px);
-}
-
-.home-section .text {
-    display: inline-block;
-    color: var(--bg-color);
-    font-size: 25px;
-    font-weight: 500;
-    margin: 18px;
-}
-
-.my-scroll-active {
-    overflow-y: auto;
-}
-
-#my-scroll {
-    overflow-y: auto;
-    height: calc(100% - 60px);
-}
-
-#my-scroll::-webkit-scrollbar {
-    display: none;
-    /* background-color: rgba(255, 255, 255, 0.2); 
-    width: 10px;
-    border-radius:5px  */
-}
-
-.card {
-    border-radius: 70px;
-    box-shadow: 0 4px 80px 10 rgba(255, 255, 255, 0.2);
-    max-width: 200px;
-    margin: auto;
-    text-align: center;
-    opacity: 1;
-}
-
-.cardframe {
-    height: 250px;
-    max-width: 200px;
-    border-radius: 25px;
-    text-align: center;
-    margin: auto;
-}
-
-.cardframemini {
-    height: 150px;
-    max-width: 180px;
-    border-radius: 25px;
-    text-align: center;
-    margin: auto;
-}
-
-.cardframeminize {
-    height: 100px;
-    max-width: 180px;
-    border-radius: 25px;
-    text-align: center;
-    margin: auto;
-}
-
-.blackcardframe {
-    background: #ffffff;
-}
-
-.Trancardframe {
-    border: 2px solid #50504e;
-}
-
-.title {
-    color: rgb(14, 13, 13);
-    font-size: 18px;
-}
-
-.titleheader {
-    color: rgb(255, 255, 255);
-    font-size: 25px;
-}
-
-.buttondrive {
-    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
-    background-color: #ffffff;
-    border-radius: 18px;
-    /* cursor: pointer; */
-    color: #404040;
-    font-family: Arial;
-    font-size: 28px;
-    font-weight: bold;
-    /* padding: 16px 31px; */
-    max-width: 200px;
-    width: 100px;
-    height: 50px;
-    /* display: flex; */
-    /* align-items: center; */
-    /* flex-wrap: nowrap; */
-    margin: auto;
-}
-
-.buttondriveclose {
-    background: linear-gradient(to bottom, #000000 5%, #000000 100%);
-    background-color: #000000;
-    border-radius: 18px;
-    /* cursor: pointer; */
-    color: #e73f3f;
-    font-family: Arial;
-    font-size: 28px;
-    font-weight: bold;
-    /* padding: 16px 31px; */
-    max-width: 200px;
-    height: 50px;
-    /* display: flex; */
-    /* align-items: center; */
-    /* flex-wrap: nowrap; */
-    margin: auto;
-}
-
-.cardbutton {
-    height: 150px;
-    max-width: 200px;
-    border-radius: 25px;
-    text-align: center;
-    margin: auto;
-}
-
-.buttondrive #log_out {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background: var(--secondary-color);
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-    border-radius: 0px;
-    transition: all 0.5s ease;
-}
-
-
-.buttondrive:hover {
-    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
-    background-color: #ffffff;
-}
-
-.buttondrive:active {
-    position: relative;
-    top: 1px;
-}
-
-a {
-    text-decoration: none;
-    font-size: 22px;
-    color: black;
-}
-
-button:hover,
-a:hover {
-    opacity: 1.5;
-}
-
-.v-list {
-    height: 200px;
-    /* or any height you want */
-    overflow-y: auto;
-    /* border-radius: 25px; */
-    /* margin-left: auto;
-    margin-right: auto; */
-}
-
-.center {
-    /* margin: 0; */
-    /* position: absolute; */
-    align-items: center;
-    top: 50%;
-    left: 50%;
-    /* display: block; */
-    margin: auto;
-    /* width: auto; */
-    /* -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%); */
-    transform: translatey(10%);
-}
+<style scoped src="@/assets/styles/styles.css">
 </style>
