@@ -1,31 +1,6 @@
 <template>
   <div class="map-section">
-    <!-- <SidebarMenuAkahon
-    namerover="namerover"
-    /> -->
-    <!-- <sidebar-menu-akahon 
-    @search-input-emit="search"
-    
-  /> -->
-    <!-- <h2>Vue Js Google Maps with Multiple Markers </h2> -->
-    <!-- <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p> -->
-    <nav v-if="isActive === true">
-      <p>{{ NameRover }}</p>
-      <p>{{ namerover }}</p>
-
-      <div v-if="isActive === true">
-        <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
-          @click="isActive = !isActive">Manual</button>
-      </div>
-    </nav>
-    <!-- <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
-          @click="isActive = !isActive">Manual</button> -->
-
-    <!-- <GmapAutocomplete
-      @place_changed='setPlace'
-    /> -->
-    <!-- <button @click="getMarkers(key)">Refresh</button> -->
-    <gmap-map :center="center" :zoom="16.5" style="width: 100%; height: 100%" :options="{
+   <gmap-map :center="center" :zoom="16.5" style="width: 100%; height: 100%" :options="{
       zoomControl: false,
       scaleControl: true,
       mapTypeControl: true,
@@ -35,56 +10,26 @@
       streetViewControl: false,
       disableDefaultUi: false
     }">
-      <!-- <gmap-marker
-        :key="index"
-        v-for="(gmp, index) in locations"
-        :position="gmp"
-        :icon="getMarkers(key)"
-        @click="center=gmp"
-        
-      ></gmap-marker> -->
+     
       <gmap-marker v-for="(item, key) in coordinates" :key="key" :position="getPosition(item)" :clickable="true"
         :icon="getMarkers1(key)" @click="toggleInfo(item, key)"></gmap-marker>
       <!-- <gmap-marker v-on:change="updateCoordinates()" :position="center" :draggable="true" @closeclick="updateCoordinates()"/> -->
     </gmap-map>
-    <!-- <transition name="map-info-window-slide">
-      <div
-        class="map-info-window"
-        :opened="infoOpened"
-        :position="infoPosition"
-        v-if="infoOpened"
-      >
-        <div class="city-info" v-if="selectedMarker">
-          <div class="city-location">{{ selectedMarker.lat }} , {{ selectedMarker.lng }}</div>
-          <button class="btn btn-full-width btn-main">Update</button>
-          <div class="map-btn-close-holder">
-            <button class="map-btn-close" @click="closeInfoWindow()">close</button>
-          </div>
-        </div>
-        
-      </div>
-    </transition> -->
-    <!-- <p>Latitude: {{ latitude }},Longitude:{{longitude}}</p>
-    <button @click="noom">Refresh</button> -->
-  </div>
+    </div>
 </template>
  
 <script>
 
 
 import firebaseApp from './firebase'
-// import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
 
-// var nnn = 14.875811571268388;
 var la = 14.875811571268388;
 var long = 102.01502828868293;
 var la_User = 14.875811571268388;
 var long_User = 102.01502828868293;
 export default {
   name: "DrawGoogleMap",
-  // components: {
-  //   SidebarMenuAkahon,
-  // },
+  
   props: {
     LogoImg: {
       type: String,
@@ -92,29 +37,10 @@ export default {
     },
   },
   data: function () {
-    // let mapMarker ="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjMiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAyMyAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMyAxMS41QzIzIDIxLjUgMTEuNSAyOC41IDExLjUgMjguNUMxMS41IDI4LjUgMCAyMS41IDAgMTEuNUMwIDUuMTQ4NzMgNS4xNDg3MyAwIDExLjUgMEMxNy44NTEzIDAgMjMgNS4xNDg3MyAyMyAxMS41WiIgZmlsbD0iI0M3MDYyOSIvPg0KPGNpcmNsZSBjeD0iMTEuNSIgY3k9IjExLjUiIHI9IjUuNSIgZmlsbD0iIzgxMDAxNyIvPg0KPC9zdmc+DQo=";
-    // let iconCar ="http://maps.google.com/mapfiles/kml/shapes/cabs.png";
     let iconCar = require('../assets/img/class_front.png');
-    // let iconCar ="https://i.postimg.cc/3N0bcm0F/Picture-Car.png";
-    // let mapMarkerActive = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjMiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAyMyAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0yMyAxMS41QzIzIDIxLjUgMTEuNSAyOC41IDExLjUgMjguNUMxMS41IDI4LjUgMCAyMS41IDAgMTEuNUMwIDUuMTQ4NzMgNS4xNDg3MyAwIDExLjUgMEMxNy44NTEzIDAgMjMgNS4xNDg3MyAyMyAxMS41WiIgZmlsbD0iIzMzMzMzMyIvPg0KPGNpcmNsZSBjeD0iMTEuNSIgY3k9IjExLjUiIHI9IjUuNSIgZmlsbD0iYmxhY2siLz4NCjwvc3ZnPg0K";
     let mapMarkerActive = "http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png";
     let iconUser = "https://i.postimg.cc/bNC9tsGz/icons8-iphone-se-80.png";
-    // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-    // var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-    // var iconUser = 'http://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png';
-    // var iconUser = 'http://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
-
-    // var icons = {
-    //   parking: {
-    //     icon: iconBase + 'parking_lot_maps.png'
-    //   },
-    //   library: {
-    //     icon: iconBase + 'library_maps.png'
-    //   },
-    //   info: {
-    //     icon: iconBase + 'info-i_maps.png'
-    //   }
-    // };
+    
     return {
       // mapMarker,
       isActive:true,

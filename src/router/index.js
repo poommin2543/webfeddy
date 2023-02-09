@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import HomehomeView from '../views/HomehomeView.vue'
+import ControlView from '../views/ControlView.vue'
+// import HomehomeView from '../views/HomehomeView.vue'
 import { BootstrapVue } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -18,8 +19,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomehomeView
+    name: 'ControlView',
+    component: ControlView
   },
   {
     path: '/home',
@@ -43,6 +44,11 @@ const routes = [
     path: '/MultiCamera',
     name: 'MultiCamera',
     component: () => import('../components/Muticamera.vue')
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: () => import('../views/LoginView.vue')
   },
   {
     path: '/Mqtt',

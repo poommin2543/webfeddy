@@ -1,0 +1,84 @@
+.grid-container {
+  background-color: #8dc9fa;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  height: 100%;
+  font-size: 30px;
+}
+.grid-color-red{
+    background-color: #f7b3b3;
+    /* height: 100%; */
+}
+.grid-color-blue{
+    background-color: #0429ff;
+    /* height: 100%; */
+
+}
+.card {
+    border-radius: 70px;
+    box-shadow: 0 4px 80px 10 rgba(255, 255, 255, 0.2);
+    max-width: 200px;
+    margin: auto;
+    text-align: center;
+    opacity: 1;
+}
+.cardframe {
+    height: 300px;
+    max-width: 230px;
+    border-radius: 25px;
+    text-align: center;
+    margin: auto;
+}
+
+.cardframemini {
+    height: 150px;
+    max-width: 200px;
+    border-radius: 25px;
+    text-align: center;
+    margin: auto;
+}
+
+.cardframeminize {
+    height: 100px;
+    max-width: 200px;
+    border-radius: 25px;
+    text-align: center;
+    margin: auto;
+}
+
+.blackcardframe {
+    background: #ffffff;
+}
+
+.Trancardframe {
+    border: 2px solid #50504e;
+}
+.buttondrive {
+    background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    background-color: #ffffff;
+    border-radius: 18px;
+    color: #404040;
+    font-family: Arial;
+    font-size: 28px;
+    font-weight: bold;
+    max-width: 200px;
+    width: 100px;
+    height: 50px;
+    margin: auto;
+}
+
+.buttondriveclose {
+    background: linear-gradient(to bottom, #000000 5%, #000000 100%);
+    background-color: #000000;
+    border-radius: 18px;
+    color: #e73f3f;
+    font-family: Arial;
+    font-size: 28px;
+    font-weight: bold;
+    max-width: 200px;
+    height: 50px;
+    margin: auto;
+}

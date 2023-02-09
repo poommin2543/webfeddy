@@ -8,7 +8,10 @@ import 'vue-material/dist/theme/default.css'
 import VueGamepad from 'vue-gamepad';
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
 import Vuetify from 'vuetify'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+// createApp(App).mount('#app')
 Vue.use(Vuetify)
 Vue.component('vue-sidebar-menu-akahon', VueSidebarMenuAkahon);
 Vue.use(VueGamepad);
