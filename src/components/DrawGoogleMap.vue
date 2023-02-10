@@ -1,8 +1,8 @@
 <template>
   <div class="map-section">
-    <!-- <SidebarMenuAkahon
+    <SidebarMenuAkahon
     namerover="namerover"
-    /> -->
+    />
     <!-- <sidebar-menu-akahon 
     @search-input-emit="search"
     
@@ -73,7 +73,7 @@
 
 
 import firebaseApp from './firebase'
-// import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
+import SidebarMenuAkahon from "@/components/Sidebar-menu.vue"
 
 // var nnn = 14.875811571268388;
 var la = 14.875811571268388;
@@ -82,9 +82,9 @@ var la_User = 14.875811571268388;
 var long_User = 102.01502828868293;
 export default {
   name: "DrawGoogleMap",
-  // components: {
-  //   SidebarMenuAkahon,
-  // },
+  components: {
+    SidebarMenuAkahon,
+  },
   props: {
     LogoImg: {
       type: String,

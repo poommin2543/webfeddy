@@ -632,5 +632,5 @@ export default {
 }
 </script>
 
-<style scoped src="@/assets/styles/styles-Sidebar.css">
+<style scoped src="@/assets/styles/styles.css">
 </style>
