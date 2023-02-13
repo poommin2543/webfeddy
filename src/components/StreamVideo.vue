@@ -83,7 +83,7 @@ let iconUser = "https://i.postimg.cc/bNC9tsGz/icons8-iphone-se-80.png";
 let JANUS_URL = 'https://34.143.225.243:8089/janus'
 if(window.location.protocol === 'http:'){
   // console.log(JANUS_URL)
-  JANUS_URL = 'http://34.143.225.243:8088/janus'
+  JANUS_URL = 'http://103.82.249.178:8088/janus'
   console.log(JANUS_URL)
 }
 
