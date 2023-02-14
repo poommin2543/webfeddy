@@ -1,0 +1,5 @@
+0:absolute
+1:active
+5:noom
+10:zaza
+100:qwe

@@ -13,6 +13,7 @@
           <div>{{ stream == null ? "null" : notNull }}</div>
           <button type="button" class="btn btn-primary" @click.prevent="start" :disabled="stream">Start</button>
           <button type="button" class="btn btn-secondary" @click.prevent="stop" :disabled="!stream">Stop</button>
+        <p>Noom</p>
         </div>
       </div>
       <div class="md-layout-item">
@@ -23,12 +24,12 @@
         </div>
       </div>
     </div>
-    <div class="md-layout">
+    <!-- <div class="md-layout">
       <div class="md-layout-item">
       </div>
       <div class="md-layout-item"></div>
       <div class="md-layout-item"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -229,43 +230,11 @@ export default {
 </script>
 
 <style scoped src="@/assets/styles/stylesViewControl.css">
-.map-section {
-  height: 95vh;
-  position: relative;
-  overflow: hidden;
+.p{
+  background-color: #ffffff;
 }
 
-.map-info-window {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  background: #fff;
-  padding: 15px 20px 10px;
-}
-
-.map-info-window-slide-leave-active,
-.map-info-window-slide-enter-active {
-  transition: 0.5s;
-}
-
-.map-info-window-slide-enter {
-  transform: translate(0, -100%);
-}
-
-.map-info-window-slide-leave-to {
-  transform: translate(0, -100%);
-}
-
-.city-info>div {
-  margin-bottom: 10px;
-}
-
-.map-btn-close-holder {
-  margin-top: 10px;
-}
-
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -285,5 +254,5 @@ button {
 
 video {
   width: 80%;
-}
+} */
 </style>
