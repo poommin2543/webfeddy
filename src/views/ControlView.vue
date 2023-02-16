@@ -1,7 +1,7 @@
 <template>
   <div class="container-max-widths text-center grid-logo">
     <div class="row grid-color-red">
-      <div class="col-lg-2">
+      <div class="col-lg-2 h-100">
         <div class="row grid-color-black">
           <div class="col-lg-12">
             <a>Poommin Phinphimai</a>
@@ -24,33 +24,7 @@
                   </v-list-item-group>
                 </div>
               </v-list>
-              <!-- <v-card class="mx-auto" max-width="300" tile>
-                <v-list dense>
-                  <v-subheader>REPORTS</v-subheader>
-                  <v-list-item-group v-model="selectedItem" color="primary">
-                    <v-list-item v-for="(item, i) in items" :key="i">
-                      <v-list-item-icon>
-                        <v-icon v-text="item.icon"></v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-title v-text="item.Name"></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </v-card> -->
-              <!-- <div class="card">
 
-                <div class="list-group">
-                  <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                  <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                  <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                  <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                  <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                  <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                  
-                </div>
-              </div> -->
 
             </div>
           </div>
@@ -118,18 +92,17 @@
         </div>
 
       </div>
-
-      <div class="col-lg-10 grid-header grid-color-black">
-        <Stream></Stream>
-        <div class="row grid-container ">
-          <div class="col-lg-12 grid-Footer grid-color-blue grid-scall">
-            <Map></Map>
-          </div>
+      <div class="col-lg-10 ">
+        <div class="col-lg-12 grid-header grid-color-black h-10">
+          <Stream></Stream>
+        </div>
+        <div class="col-lg-12 grid-Footer grid-color-black grid-scall">
+          <Map></Map>
         </div>
       </div>
     </div>
 
-  </div>
+</div>
 </template>
 
 <script>
@@ -527,6 +500,4 @@ export default {
 
 }
 </script>
-<style scoped src="@/assets/styles/stylesViewControl.css">
-
-</style>
+<style scoped src="@/assets/styles/stylesViewControl.css"></style>

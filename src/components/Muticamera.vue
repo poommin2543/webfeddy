@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <div class="select-ctn">
-    </div>
-    <div class="md-layout">
-      <div class="md-layout-item">
+    <div class="row ">
+      <div class="col-lg-2">
         <div class="map-section">
           <select v-model="streamList.selected" :disabled="stream">
             <option v-for="option in streamList.options" :key="option.id" :value="option.id">
@@ -13,17 +11,26 @@
           <div>{{ stream == null ? "null" : notNull }}</div>
           <button type="button" class="btn btn-primary" @click.prevent="start" :disabled="stream">Start</button>
           <button type="button" class="btn btn-secondary" @click.prevent="stop" :disabled="!stream">Stop</button>
-        <p>Noom</p>
+        <p>{{status}}</p>
         </div>
       </div>
-      <div class="md-layout-item">
+      <div class="col-lg-10">
         <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
+
         <div class="video-vtn">
-          <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="320px"
+          <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
             height="240px"></video>
         </div>
       </div>
     </div>
+    <!-- <div class="md-layout">
+      <div class="md-layout-item">
+        
+      </div>
+      <div class="md-layout-item">
+        
+      </div>
+    </div> -->
     <!-- <div class="md-layout">
       <div class="md-layout-item">
       </div>
@@ -48,6 +55,7 @@ export default {
   name: 'App',
   data() {
     return {
+
       janus: null,
       error: null,
       plugin: null,
@@ -234,15 +242,15 @@ export default {
   background-color: #ffffff;
 }
 
-/* #app {
+ /* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #48627c;
   margin-top: 60px;
-}
-
+} */
+/*
 div {
   margin-bottom: 1.5rem;
 }
