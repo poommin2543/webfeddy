@@ -1,38 +1,17 @@
-from machine import Pin
-from time import sleep_ms, ticks_ms, ticks_diff, time
+# import the opencv library
+import cv2
+cap = cv2.VideoCapture(0)
+# cap.set(cv2.CV_CAP_PROP_FRAME_WIDTH, 640)
+# cap.set(cv2.CV_CAP_PROP_FRAME_HEIGHT, 360)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 
-pinA = Pin(32, Pin.IN)
-pinB = Pin(33, Pin.IN)
-x = 0
-t = 0.00001
-c = 0
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
 
+while(True):
+	ret, frame = cap.read()
+	cv2.imshow('frame', frame)
+	if cv2.waitKey(1) & 0xFF == ord('q'):
+		break
 
-def count(t):
-    global x
-    global c
-    x = x + 1
-    if pinB.value() == 1:
-        c = c+1
-    else:
-        c = c-1
-
-
-pinA.irg(trigger=Pin.IRQ_RISING, handler=count)
-
-while True:
-    if x == 0:
-        start = ticks_ms()
-    elif x >= 600:
-        t = ticks_diff(ticks_ms(), start)
-        x = 0
-        start = ticks_ms()
-    if c >= 600 or c <= -600:
-        c = 0
-    if c >= 1:
-        print((c/600) * 360)
-    elif c <= 0:
-        print(((600+c) / 600) * 360)
-
-    print("speed", (60)/(t/1000), " rpm")
-    sleep_ms(50)
+cap.release()
+cv2.destroyAllWindows()
