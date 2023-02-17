@@ -209,7 +209,8 @@ export default {
       })
     },
     start() {
-      this.plugin.send({ message: { request: "watch", id: this.streamList.selected } })
+      // this.plugin.send({ message: { request: "watch", id: this.streamList.selected } })
+      this.plugin.send({ message: { request: "watch", id: 11 } })
     },
     stop() {
       this.plugin.send({ message: { request: "stop" } })

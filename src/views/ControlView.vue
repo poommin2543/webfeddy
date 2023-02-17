@@ -94,7 +94,18 @@
       </div>
       <div class="col-lg-10 ">
         <div class="col-lg-12 grid-header grid-color-black h-10">
-          <Stream></Stream>
+          <!-- <Stream></Stream> -->
+          <div class="row ">
+      
+      <div class="col-lg-12">
+        <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
+
+        <div class="video-vtn">
+          <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
+            height="240px"></video>
+        </div>
+      </div>
+    </div>
         </div>
         <div class="col-lg-12 grid-Footer grid-color-black grid-scall">
           <Map></Map>
@@ -107,13 +118,20 @@
 
 <script>
 import Map from "@/components/Map.vue"
-import Stream from "@/components/Muticamera.vue"
+// import Stream from "@/components/Muticamera.vue"
 import firebaseApp from '@/components/firebase.js'
 import mqtt from 'mqtt/dist/mqtt'
+import { Janus } from 'janus-gateway'
+let JANUS_URL = 'https://34.143.225.243:8089/janus'
+if (window.location.protocol === 'http:') {
+  // console.log(JANUS_URL)
+  JANUS_URL = 'http://103.82.249.178:8088/janus'
+  console.log(JANUS_URL)
+}
 export default {
   components: {
     Map,
-    Stream
+    // Stream
   },
   data() {
     return {
@@ -179,6 +197,18 @@ export default {
       textX: "X",
       textY: "Y",
       textLB: "Reset",
+      //Stream
+      janus: null,
+      error: null,
+      plugin: null,
+      status: null,
+      stream: null,
+      streamList: {
+        selected: null,
+        options: []
+      },
+      remoteTracks: {},
+      remoteVideos: 0,
     }
   },
   mounted() {
@@ -187,6 +217,14 @@ export default {
     // this.doSubscribe()
     this.interval = setInterval(() => this.Checkonline(), 3000);
     this.isOpened = this.isMenuOpen
+    Janus.init({
+      debug: true,
+      dependencies: Janus.useDefaultDependencies(),
+      callback: () => {
+        console.log("Connecting to Janus api with server ", JANUS_URL)
+        this.connect(JANUS_URL)
+      }
+    })
     this.dbRef.on('value', ss => {
       // console.log(ss.val());
       this.items = []
@@ -221,6 +259,9 @@ export default {
     updateSelected(totoal) {
       console.log(totoal)
       this.doUnSubscribe()
+      if(this.status == 'started'){
+        this.stop()
+      }
       if (this.refBattery == true) {
         this.dbRefBattery.off()
         this.refBattery = false;
@@ -251,6 +292,7 @@ export default {
             topic: value.toLowerCase() + '/status'
           }
           this.doSubscribe();
+          this.start();
           refStatus = "/" + value + '/status'
           this.dbRefBattery = firebaseApp.database().ref(refStatus)
 
@@ -478,6 +520,155 @@ export default {
         left: 0
       });
     },
+    //Stream
+    
+    connect(server) {
+      this.janus = new Janus({
+        server,
+        // Call success callback
+        success: () => {
+          console.log("Connected")
+          this.attachPlugin()
+        },
+        // Call error callback 
+        error: (error) => {
+          console.log("Error")
+          this.onError('Failed to connect janus server', error)
+        },
+        // Call destroyed callback
+        destroyed: () => {
+          console.log("Destroyed")
+          window.location.reload()
+        }
+      })
+    },
+
+    attachPlugin() {
+      this.janus.attach({
+        plugin: "janus.plugin.streaming",
+        opaqueId: 'thisisopaqueid',
+        success: (pluginHandle) => {
+          this.plugin = pluginHandle
+          console.log("getBitrate : ", this.plugin.getBitrate())
+          // this.updateStreamsList()
+        },
+        error: (error) => {
+          this.onError('Error attaching plugin... ', error)
+        },
+        iceState: (state) => {
+          console.log("ICE state changed to ", state)
+        },
+        webrtcState: (on) => {
+          console.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now")
+        },
+        slowLink: (uplink, lost, mid) => {
+          console.log("Janus reports problems " + (uplink ? "sending" : "receiving") +
+            " packets on mid " + mid + " (" + lost + " lost packets)")
+        },
+        onmessage: (msg, jsep) => {
+          // Receive status of plugin streaming 
+          console.log(" ::: Got a message :::", msg)
+          let result = msg.result
+          if (result) {
+            if (result.status) {
+              this.status = result.status
+            }
+          }
+          // Handle msg error status 
+          else if (msg.error) {
+            this.onError(msg.error)
+            this.stop()
+            return;
+          }
+          if (jsep) {
+            Janus.debug("Handling SDP as Well... ", jsep)
+            let stereo = (jsep.sdp.indexOf("stereo=1") !== -1)
+            this.plugin.createAnswer({
+              jsep: jsep,
+              media: {
+                audioSend: false,
+                videoSend: false,
+                data: true
+              },
+              customizeSdp: (jsep) => {
+                if (stereo && jsep.sdp.indexOf("stereo=1") == -1) {
+                  jsep.sdp = jsep.sdp.replace("useinbandfec=1", "useinbandfec=1;stereo=1")
+                }
+              },
+              success: (jsep) => {
+                Janus.debug("Got SDP!", jsep)
+                let body = { request: "start" }
+                this.plugin.send({
+                  message: body,
+                  jsep: jsep
+                })
+              },
+              error: (error) => {
+                this.onError("WebRTC Error: ", error)
+                alert("WebRTC error... ", error)
+              }
+            })
+          }
+        },
+        onremotetrack: (track, mid, on) => {
+          Janus.debug("Remote track (mid=" + mid + ") " + (on ? "added" : "removed") + ":", track)
+          // New track was added 
+          if (track.kind === "video") {
+            this.remoteVideos++
+            this.stream = new MediaStream()
+            this.stream.addTrack(track.clone())
+            this.remoteTracks.mid = this.stream
+            Janus.log("Created remote audio stream:", this.stream)
+          }
+        },
+
+        oncleanup: () => {
+          this.onCleanup()
+        }
+      })
+    },
+    updateStreamsList() {
+      this.plugin.send({
+        message: { request: "list" },
+        success: (result) => {
+          if (!result) {
+            this.onError("Got no response to our query for available streams.")
+          }
+          console.log("Updating StreamList....", result)
+          this.streamList.options = result.list
+          if (result.list.length) {
+            this.streamList.selected = this.streamList.options[0].id
+          }
+        }
+      })
+    },
+    start() {
+      // this.plugin.send({ message: { request: "watch", id: this.streamList.selected } })
+      this.plugin.send({ message: { request: "watch", id: 11} })
+    },
+    stop() {
+      this.plugin.send({ message: { request: "stop" } })
+      this.plugin.hangup()
+    },
+    // Reset data.params to null 
+    onCleanup() {
+      Janus.log(" ::: Got a cleanup notification :::");
+      this.stream = null
+      this.status = null
+      this.remoteTracks = {}
+      this.remoteVideos = 0
+      this.error = null
+    },
+    // Handle on error event occur
+    onError(message, error = '') {
+      Janus.error(message, error)
+      this.error = message + error
+      alert(this.error, function () {
+        window.location.reload()
+      })
+    }
+  
+    
   },
   created() {
     console.log("created()");
