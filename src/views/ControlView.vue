@@ -1,14 +1,14 @@
 <template>
   <div class="container-max-widths text-center grid-logo">
-    <div class="row grid-color-red">
+    <div class="row grid-color-black">
       <div class="col-lg-2 h-100">
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
+        <div class="row grid-color-black h-25">
+          <div class="col-lg-12 h-25">
             <a>Poommin Phinphimai</a>
             <br><a>Admin</a>
           </div>
         </div>
-        <div class="row grid-color-black">
+        <div class="row grid-color-blue">
           <div class="col-lg-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-black">
+        <div class="row grid-color-red">
           <div class="col-lg-12">
             <p>Noom</p>
           </div>
@@ -61,7 +61,7 @@
 
           </div>
         </div>
-        <div class="row grid-color-black">
+        <div class="row grid-color-red">
           <div class="col-lg-12">
             <div v-if="isActive === true">
               <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
@@ -92,20 +92,25 @@
         </div>
 
       </div>
-      <div class="col-lg-10 ">
-        <div class="col-lg-12 grid-header grid-color-black h-10">
+      <div class="col-lg-10">
+        <div class="col-lg-12 grid-header grid-color-red">
           <!-- <Stream></Stream> -->
           <div class="row ">
-      
-      <div class="col-lg-12">
-        <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
 
-        <div class="video-vtn">
-          <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
-            height="240px"></video>
-        </div>
-      </div>
-    </div>
+            <div class="col-lg-12 ">
+                <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
+
+                <div class="video-vtn ">
+                  <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
+                    height="240px"></video>
+                </div>
+                <!-- <div class="align-self-start">Aligned flex item</div>
+<div class="align-self-end">Aligned flex item</div>
+<div class="align-self-center">Aligned flex item</div>
+<div class="align-self-baseline">Aligned flex item</div>
+<div class="align-self-stretch">Aligned flex item</div> -->
+            </div>
+          </div>
         </div>
         <div class="col-lg-12 grid-Footer grid-color-black grid-scall">
           <Map></Map>
@@ -113,7 +118,7 @@
       </div>
     </div>
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -259,7 +264,7 @@ export default {
     updateSelected(totoal) {
       console.log(totoal)
       this.doUnSubscribe()
-      if(this.status == 'started'){
+      if (this.status == 'started') {
         this.stop()
       }
       if (this.refBattery == true) {
@@ -521,7 +526,7 @@ export default {
       });
     },
     //Stream
-    
+
     connect(server) {
       this.janus = new Janus({
         server,
@@ -644,7 +649,7 @@ export default {
     },
     start() {
       // this.plugin.send({ message: { request: "watch", id: this.streamList.selected } })
-      this.plugin.send({ message: { request: "watch", id: 11} })
+      this.plugin.send({ message: { request: "watch", id: 11 } })
     },
     stop() {
       this.plugin.send({ message: { request: "stop" } })
@@ -667,8 +672,8 @@ export default {
         window.location.reload()
       })
     }
-  
-    
+
+
   },
   created() {
     console.log("created()");
