@@ -8,7 +8,7 @@
             <br><a>Admin</a>
           </div>
         </div>
-        <div class="row grid-color-blue">
+        <div class="row grid-color-black">
           <div class="col-lg-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-red">
+        <div class="row grid-color-black">
           <div class="col-lg-12">
             <p>Noom</p>
           </div>
@@ -61,7 +61,7 @@
 
           </div>
         </div>
-        <div class="row grid-color-red">
+        <div class="row grid-color-black">
           <div class="col-lg-12">
             <div v-if="isActive === true">
               <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
@@ -93,18 +93,25 @@
 
       </div>
       <div class="col-lg-10">
-        <div class="col-lg-12 grid-header grid-color-red">
+        <div class="col-lg-12  grid-color-black">
           <!-- <Stream></Stream> -->
           <div class="row ">
 
             <div class="col-lg-12 ">
-                <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
-
-                <div class="video-vtn ">
-                  <video autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
-                    height="240px"></video>
+              <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
+              <div class="video-vtn img-fluid " alt="Responsive image">
+                <!-- <h3>{{ status }}</h3> -->
+                <div v-if="status == 'started'" class = 'card-img-top'>
+                  <div class="card-body">
+                    <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
+                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
+                      height="240px"></video>
+                    <!-- <img  src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
+                    <!-- This is some text within a card body. -->
+                  </div>
                 </div>
-                <!-- <div class="align-self-start">Aligned flex item</div>
+              </div>
+              <!-- <div class="align-self-start">Aligned flex item</div>
 <div class="align-self-end">Aligned flex item</div>
 <div class="align-self-center">Aligned flex item</div>
 <div class="align-self-baseline">Aligned flex item</div>
@@ -128,6 +135,7 @@ import firebaseApp from '@/components/firebase.js'
 import mqtt from 'mqtt/dist/mqtt'
 import { Janus } from 'janus-gateway'
 let JANUS_URL = 'https://34.143.225.243:8089/janus'
+let PicVdotest = require('../assets/img/class_front.png')
 if (window.location.protocol === 'http:') {
   // console.log(JANUS_URL)
   JANUS_URL = 'http://103.82.249.178:8088/janus'
@@ -140,6 +148,7 @@ export default {
   },
   data() {
     return {
+      PicVdotest,
       isOpened: true,
       isActive: false,
       isActiveJoy: false,
