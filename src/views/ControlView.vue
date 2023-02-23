@@ -1,15 +1,16 @@
 <template>
   <div class="container-max-widths text-center grid-logo">
-    <div class="row grid-color-black">
-      <div class="col-lg-2 h-100">
-        <div class="row grid-color-black h-25">
-          <div class="col-lg-12 h-25">
+    <div class="row grid-color-green">
+      <div class="col-xl-2 h-100">
+        <div class="row grid-color-black  ">
+          <div class="col-xl-12  ">
+
             <a>Poommin Phinphimai</a>
             <br><a>Admin</a>
           </div>
         </div>
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
+        <div class="row grid-color-blue  ">
+          <div class="col-xl-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
               <v-list>
@@ -29,13 +30,13 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
+        <div class="row grid-color-red ">
+          <div class="col-xl-12">
             <p>Noom</p>
           </div>
         </div>
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
+        <div class="row grid-color-blue ">
+          <div class="col-xl-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
               <!-- <p>Rover status</p> -->
@@ -61,20 +62,25 @@
 
           </div>
         </div>
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
-            <div v-if="isActive === true">
-              <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
-                @click="isActive = !isActive">Manual</button>
-            </div>
-            <div v-if="isActive === false">
-              <button type="button" class="buttondrive" :class="isActive ? 'buttondriveclose' : 'buttondrive'"
+        <div class="row grid-color-red ">
+          <!-- <div v-if="isActiveOpencontorl" col-xl-12> -->
+          <div col-xl-12>
+
+            <!-- <div v-if="isActive === true">
+                <button type="button"  :class="isActive ? 'buttonclose-33' : 'button-33'"
                 @click="isActive = !isActive">Auto</button>
+            </div> -->
+            <button class="ui button big" :class="[isActive ? 'button-33' : 'buttonclose-33']"
+              @click="isActive = !isActive">
+              {{ isActive ? 'ON' : 'OFF' }}</button>
+            <!-- <div v-if="isActiveOpencontorl === true">
+              <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
+                isActive ? 'ON' : 'OFF' }}</button>
+            </div> -->
+            <div v-if="isActive">
+              <button type="button" class="button-33" @click="joystick()">Joy</button>
             </div>
 
-            <div v-if="isActive">
-              <button type="button" class="buttondrive" @click="joystick()">Joy</button>
-            </div>
             <div v-if="isActiveJoy && isActive">
               <button type="button" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA"></button>
               <button type="button" v-gamepad:button-x="pressedX" v-gamepad:button-x.released="releasedX"></button>
@@ -85,28 +91,28 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-black">
-          <div class="col-lg-12">
-            <p>Noom</p>
+        <div class="row grid-color-blue ">
+          <div class="col-xl-12">
+            <p>{{ isActive }}</p>
           </div>
         </div>
 
       </div>
-      <div class="col-lg-10">
-        <div class="col-lg-12  grid-color-black">
+      <div class="col-xl-10">
+        <div class="col-xl-12  grid-color-red">
           <!-- <Stream></Stream> -->
           <div class="row ">
 
-            <div class="col-lg-12 ">
+            <div class="col-xl-12 ">
               <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
               <div class="video-vtn img-fluid " alt="Responsive image">
                 <!-- <h3>{{ status }}</h3> -->
-                <div v-if="status == 'started'" class = 'card-img-top'>
+                <div v-if="status == 'started'" class='card-img-top'>
                   <div class="card-body">
                     <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
-                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
-                      height="240px"></video>
-                    <!-- <img  src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
+                    <!-- <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
+                      height="240px"></video> -->
+                    <img src="../assets/img/template.png" class="img-fluid" alt="Responsive image">
                     <!-- This is some text within a card body. -->
                   </div>
                 </div>
@@ -119,7 +125,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-12 grid-Footer grid-color-black grid-scall">
+        <div class="col-xl-12 card-Footer grid-color-black grid-scall">
           <Map></Map>
         </div>
       </div>
@@ -152,6 +158,7 @@ export default {
       isOpened: true,
       isActive: false,
       isActiveJoy: false,
+      isActiveOpencontorl: false,
       rover: "",
       selectedItem: 1,
       items: [
@@ -255,11 +262,7 @@ export default {
   },
   methods: {
     toggle() {
-      if (!this.isBottonAuto) {
-        this.isBottonAuto == true;
-      } else {
-        this.isBottonAuto == false;
-      }
+      this.isActive = this.isActive ? false : true;
     },
     clicked() {
       if (!this.isActive) {
@@ -273,6 +276,8 @@ export default {
     updateSelected(totoal) {
       console.log(totoal)
       this.doUnSubscribe()
+      this.isActiveOpencontorl = true
+
       if (this.status == 'started') {
         this.stop()
       }
