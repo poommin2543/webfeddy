@@ -61,6 +61,13 @@
     text-align: center;
     margin: auto;
 }
+.cardframelogo {
+  height: 220px;
+  max-width: 200px;
+  border-radius: 25px;
+  text-align: center;
+  margin: auto;
+}
 
 .cardframeminize {
     height: 100px;
@@ -75,7 +82,7 @@
 }
 
 .Trancardframe {
-    border: 2px solid #50504e;
+    border: 2px solid #020202;
 }
 .buttondrive {
     background: linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);

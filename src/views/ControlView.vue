@@ -1,6 +1,6 @@
 <template>
   <div class="container-max-widths text-center grid-logo">
-    <div class="row grid-color-green">
+    <div class="row grid-color-black">
       <div class="col-xl-2 h-100">
         <div class="row grid-color-black  ">
           <div class="col-xl-12  ">
@@ -9,7 +9,7 @@
             <br><a>Admin</a>
           </div>
         </div>
-        <div class="row grid-color-blue  ">
+        <div class="row grid-color-black  ">
           <div class="col-xl-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
@@ -30,12 +30,12 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-red ">
+        <div class="row grid-color-black ">
           <div class="col-xl-12">
             <p>Noom</p>
           </div>
         </div>
-        <div class="row grid-color-blue ">
+        <div class="row grid-color-black ">
           <div class="col-xl-12">
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
@@ -62,15 +62,15 @@
 
           </div>
         </div>
-        <div class="row grid-color-red ">
+        <div class="row grid-color-black ">
           <!-- <div v-if="isActiveOpencontorl" col-xl-12> -->
-          <div col-xl-12>
+          <div class ="col-xl-12">
 
             <!-- <div v-if="isActive === true">
                 <button type="button"  :class="isActive ? 'buttonclose-33' : 'button-33'"
                 @click="isActive = !isActive">Auto</button>
             </div> -->
-            <button class="ui button big" :class="[isActive ? 'button-33' : 'buttonclose-33']"
+            <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
               @click="isActive = !isActive">
               {{ isActive ? 'ON' : 'OFF' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
@@ -78,7 +78,8 @@
                 isActive ? 'ON' : 'OFF' }}</button>
             </div> -->
             <div v-if="isActive">
-              <button type="button" class="button-33" @click="joystick()">Joy</button>
+              <!-- <button type="button" class="button-33" @click="joystick()">Joy</button> -->
+              <button type="button" class="btn btn-dark" @click="joystick()">Joy</button>
             </div>
 
             <div v-if="isActiveJoy && isActive">
@@ -91,15 +92,23 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-blue ">
+        <div class="row grid-color-black ">
           <div class="col-xl-12">
+            <div>
+              <!-- <button type="button" class="button-33" @click="auto()">auto</button>
+              <button type="button" class="button-33" @click="close()">close</button> -->
+            </div>
             <p>{{ isActive }}</p>
+            <div class="cardframelogo Trancardframe">
+              <img src="../assets/img/class logo.png" class="img-fluid" alt="Responsive image">
+
+            </div>
           </div>
         </div>
 
       </div>
       <div class="col-xl-10">
-        <div class="col-xl-12  grid-color-red">
+        <div class="col-xl-12  grid-color-black">
           <!-- <Stream></Stream> -->
           <div class="row ">
 
@@ -110,9 +119,9 @@
                 <div v-if="status == 'started'" class='card-img-top'>
                   <div class="card-body">
                     <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
-                    <!-- <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
-                      height="240px"></video> -->
-                    <img src="../assets/img/template.png" class="img-fluid" alt="Responsive image">
+                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
+                      height="240px"></video>
+                    <!-- <img src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
                     <!-- This is some text within a card body. -->
                   </div>
                 </div>
@@ -212,6 +221,7 @@ export default {
       retryTimes: 0,
       refBattery: false,
       refJoystick: false,
+      activeauto: false,
       // Joy,
       textA: "A",
       textB: "B",
@@ -276,8 +286,8 @@ export default {
     updateSelected(totoal) {
       console.log(totoal)
       this.doUnSubscribe()
+      this.activeauto = true
       this.isActiveOpencontorl = true
-
       if (this.status == 'started') {
         this.stop()
       }
@@ -287,6 +297,7 @@ export default {
       }
       if (this.refJoystick == true) {
         this.dbRefJoystick.off()
+        this.dbRefAutoContorl.off()
         this.refJoystick = false;
       }
       var refStatus = "";
@@ -313,6 +324,9 @@ export default {
           this.doSubscribe();
           this.start();
           refStatus = "/" + value + '/status'
+          this.dbRefBattery = firebaseApp.database().ref(refStatus)
+
+          refStatus = "/" + value + '/status/auto'
           this.dbRefBattery = firebaseApp.database().ref(refStatus)
 
           this.refBattery = true;
@@ -439,9 +453,30 @@ export default {
       this.isActiveJoy = !this.isActiveJoy
       if (this.isActiveJoy == true) {
         console.log("/" + this.namerover + '/control')
+        
+        this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/auto')
         this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
         this.refJoystick == true
+        this.auto()
+        
       }
+    },
+    close(){
+      this.dbRefAutoContorl.off()
+    },
+    auto() {
+      // this.dbRefJoystick.set({});
+      console.log("======================>")
+      console.log("/" + this.namerover + '/status')
+      this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
+      this.dbRefAutoContorl.update({auto:false});
+
+      // this.dbRefAutoContorl.on('value', ss => {
+      //       for (const [key, value] of Object.entries(ss.val())) {
+      //         console.log(`${key}: ${value}`);
+              
+      //       }
+      //     })
     },
     pressedA(e) {
       this.textA = "Click";
