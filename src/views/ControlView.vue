@@ -71,7 +71,7 @@
                 @click="isActive = !isActive">Auto</button>
             </div> -->
             <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
-              @click="isActive = !isActive">
+              @click="toggle()">
               {{ isActive ? 'ON' : 'OFF' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
               <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
@@ -273,6 +273,14 @@ export default {
   methods: {
     toggle() {
       this.isActive = this.isActive ? false : true;
+      if (this.isActive){
+      this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
+      this.dbRefAutoContorl.update({auto:false});
+      }
+      else{
+      this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
+      this.dbRefAutoContorl.update({auto:true});
+      }
     },
     clicked() {
       if (!this.isActive) {
@@ -326,8 +334,8 @@ export default {
           refStatus = "/" + value + '/status'
           this.dbRefBattery = firebaseApp.database().ref(refStatus)
 
-          refStatus = "/" + value + '/status/auto'
-          this.dbRefBattery = firebaseApp.database().ref(refStatus)
+          // refStatus = "/" + value + '/status/auto'
+          // this.dbRefBattery = firebaseApp.database().ref(refStatus)
 
           this.refBattery = true;
           this.dbRefBattery.on('value', ss => {
@@ -454,10 +462,10 @@ export default {
       if (this.isActiveJoy == true) {
         console.log("/" + this.namerover + '/control')
         
-        this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/auto')
+        // this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/auto')
         this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
         this.refJoystick == true
-        this.auto()
+        // this.auto()
         
       }
     },
