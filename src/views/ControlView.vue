@@ -72,7 +72,7 @@
             </div> -->
             <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
               @click="toggle()">
-              {{ isActive ? 'ON' : 'OFF' }}</button>
+              {{ isActive ? 'Manual' : 'Auto' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
               <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
                 isActive ? 'ON' : 'OFF' }}</button>
@@ -295,6 +295,8 @@ export default {
       console.log(totoal)
       this.doUnSubscribe()
       this.activeauto = true
+      this.isActiveJoy = false
+      this.isActive = false
       this.isActiveOpencontorl = true
       if (this.status == 'started') {
         this.stop()
