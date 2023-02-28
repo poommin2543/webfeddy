@@ -40,6 +40,8 @@
             <div class="cardframe blackcardframe">
               <p class="titleheader"> Rover list</p>
               <!-- <p>Rover status</p> -->
+
+
               <div class="cardframemini Trancardframe">
 
                 <p>Rover : {{ namerover }}</p>
@@ -47,8 +49,6 @@
                 <p>Battery : {{ Battery }}</p>
                 <p>Velocity: {{ Velocity }}</p>
                 <p></p>
-
-
               </div>
               <!-- <p>Order tatus</p> -->
               <div class="cardframeminize Trancardframe">
@@ -56,15 +56,22 @@
                 <p>Status : </p>
                 <p>Time Estima : </p>
               </div>
-
+              <!-- <div class="Rover_List Contact_Text">
+                <div class="Frame_857 autoFrame_857">
+                  <div class="Asset_1_2">
+                    <div class="Rover_Class_final_front_1">
+                      <p>noomza</p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
 
             </div>
-
           </div>
         </div>
         <div class="row grid-color-black ">
           <!-- <div v-if="isActiveOpencontorl" col-xl-12> -->
-          <div class ="col-xl-12">
+          <div class="col-xl-12">
 
             <!-- <div v-if="isActive === true">
                 <button type="button"  :class="isActive ? 'buttonclose-33' : 'button-33'"
@@ -92,19 +99,31 @@
             </div>
           </div>
         </div>
+        <!-- <div class="row grid-color-black ">
+          <div class="col-xl-12">
+            <div class="Rover_List">
+              <div class="Frame_857">
+                <div class="col-sm-2">
+                  <div class="Rover_Class_final_front_1">
+                  </div>
+                    <div class="col-sm-8">
+                      <p class="text_roverlist">Rover001</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div> -->
         <div class="row grid-color-black ">
           <div class="col-xl-12">
-            <div>
-              <!-- <button type="button" class="button-33" @click="auto()">auto</button>
-              <button type="button" class="button-33" @click="close()">close</button> -->
-            </div>
-            <p>{{ isActive }}</p>
             <div class="cardframelogo Trancardframe">
               <img src="../assets/img/class logo.png" class="img-fluid" alt="Responsive image">
 
             </div>
           </div>
         </div>
+
 
       </div>
       <div class="col-xl-10">
@@ -119,8 +138,8 @@
                 <div v-if="status == 'started'" class='card-img-top'>
                   <div class="card-body">
                     <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
-                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream" playsinline width="1280px"
-                      height="240px"></video>
+                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream"
+                      playsinline width="1280px" height="240px"></video>
                     <!-- <img src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
                     <!-- This is some text within a card body. -->
                   </div>
@@ -274,13 +293,13 @@ export default {
   methods: {
     toggle() {
       this.isActive = this.isActive ? false : true;
-      if (this.isActive){
-      this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
-      this.dbRefAutoContorl.update({auto:false});
+      if (this.isActive) {
+        this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
+        this.dbRefAutoContorl.update({ auto: false });
       }
-      else{
-      this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
-      this.dbRefAutoContorl.update({auto:true});
+      else {
+        this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
+        this.dbRefAutoContorl.update({ auto: true });
       }
     },
     clicked() {
@@ -315,7 +334,7 @@ export default {
       // this.yourFunction()
       for (const [key, value] of Object.entries(totoal)) {
         if (key === 'Name') {
-          // var decodedStringBtoA = value;
+          // var decodedStringBtoA = value;grid-scall
 
           // Encode the String
           var encodedStringBtoA = btoa(value);
@@ -335,7 +354,7 @@ export default {
           this.doSubscribe();
           refStatus = "/" + value + '/status'
           this.dbStatus = firebaseApp.database().ref(refStatus)
-          
+
           // refStatus = "/" + value + '/status/auto'
           // this.dbStatus = firebaseApp.database().ref(refStatus)
 
@@ -359,7 +378,7 @@ export default {
                 this.idcamera = value
                 this.start();
               }
-              
+
 
             }
           })
@@ -470,15 +489,15 @@ export default {
       this.isActiveJoy = !this.isActiveJoy
       if (this.isActiveJoy == true) {
         console.log("/" + this.namerover + '/control')
-        
+
         // this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/auto')
         this.dbRefJoystick = firebaseApp.database().ref("/" + this.namerover + '/control')
         this.refJoystick == true
         // this.auto()
-        
+
       }
     },
-    close(){
+    close() {
       this.dbRefAutoContorl.off()
     },
     auto() {
@@ -486,12 +505,12 @@ export default {
       console.log("======================>")
       console.log("/" + this.namerover + '/status')
       this.dbRefAutoContorl = firebaseApp.database().ref("/" + this.namerover + '/status')
-      this.dbRefAutoContorl.update({auto:false});
+      this.dbRefAutoContorl.update({ auto: false });
 
       // this.dbRefAutoContorl.on('value', ss => {
       //       for (const [key, value] of Object.entries(ss.val())) {
       //         console.log(`${key}: ${value}`);
-              
+
       //       }
       //     })
     },
