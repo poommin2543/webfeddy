@@ -182,6 +182,7 @@ export default {
       Velocity: "N/a",
       timeone: 0,
       timemqtt: 0,
+      idcamera: 0,
       connection: {
         protocol: 'ws',
         host: '34.143.225.243',
@@ -219,7 +220,7 @@ export default {
       subscribeSuccess: false,
       connecting: false,
       retryTimes: 0,
-      refBattery: false,
+      refStatus: false,
       refJoystick: false,
       activeauto: false,
       // Joy,
@@ -301,9 +302,9 @@ export default {
       if (this.status == 'started') {
         this.stop()
       }
-      if (this.refBattery == true) {
-        this.dbRefBattery.off()
-        this.refBattery = false;
+      if (this.refStatus == true) {
+        this.dbStatus.off()
+        this.refStatus = false;
       }
       if (this.refJoystick == true) {
         this.dbRefJoystick.off()
@@ -332,15 +333,14 @@ export default {
             topic: value.toLowerCase() + '/status'
           }
           this.doSubscribe();
-          this.start();
           refStatus = "/" + value + '/status'
-          this.dbRefBattery = firebaseApp.database().ref(refStatus)
-
+          this.dbStatus = firebaseApp.database().ref(refStatus)
+          
           // refStatus = "/" + value + '/status/auto'
-          // this.dbRefBattery = firebaseApp.database().ref(refStatus)
+          // this.dbStatus = firebaseApp.database().ref(refStatus)
 
-          this.refBattery = true;
-          this.dbRefBattery.on('value', ss => {
+          this.refStatus = true;
+          this.dbStatus.on('value', ss => {
             for (const [key, value] of Object.entries(ss.val())) {
               // console.log(`${key}: ${value}`);
               if (key == 'Battery') {
@@ -353,6 +353,13 @@ export default {
                 // console.log(`${key}: ${value}`);
                 this.Velocity = value + ' m/s'
               }
+              if (key == 'idcam') {
+
+                // console.log(`${key}: ${value}`);
+                this.idcamera = value
+                this.start();
+              }
+              
 
             }
           })
@@ -708,7 +715,7 @@ export default {
     },
     start() {
       // this.plugin.send({ message: { request: "watch", id: this.streamList.selected } })
-      this.plugin.send({ message: { request: "watch", id: 11 } })
+      this.plugin.send({ message: { request: "watch", id: this.idcamera } })
     },
     stop() {
       this.plugin.send({ message: { request: "stop" } })
@@ -738,7 +745,7 @@ export default {
     console.log("created()");
     // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
     this.dbRef = firebaseApp.database().ref('/')
-    // this.dbRefBattery = firebaseApp.database().ref('/Rover1/status')
+    // this.dbStatus = firebaseApp.database().ref('/Rover1/status')
     // this.dbRef1 = firebaseApp.database().ref('Rover1/location/user')
 
   },
@@ -749,7 +756,7 @@ export default {
     console.log("beforeDestroy()");
     // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
     this.dbRef.off()
-    this.dbRefBattery.off()
+    this.dbStatus.off()
     // this.dbRef1.off()
   }
 
