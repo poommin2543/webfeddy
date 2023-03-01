@@ -11,21 +11,22 @@
         </div>
         <div class="row grid-color-black  ">
           <div class="col-xl-12">
-            <div class="cardframe blackcardframe">
-              <p class="titleheader"> Rover list</p>
+            <!-- <div class="cardframe blackcardframe"> -->
+              <div class="card text-center">
+              <!-- <p class="titleheader"> Rover list</p> -->
               <v-list>
                 <div class="centerList">
                   <v-list-item-group v-model="selectedItem" color="primary">
                     <v-list-item v-for="(item, i) in items" :key="i" @click="updateSelected(item)">
                       <v-list-item-content>
                         <!-- <p>{{ item.Name }}</p> -->
-                        <button type="button" class="list-group-item list-group-item-action">{{ item.Name }}</button>
+                        <button type="button" class="btn btn-light btn-block">{{ item.Name }}</button>
+                        <!-- <button type="button" class="list-group-item list-group-item-action">{{ item.Name }}</button> -->
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
                 </div>
               </v-list>
-
 
             </div>
           </div>
@@ -37,25 +38,79 @@
         </div>
         <div class="row grid-color-black ">
           <div class="col-xl-12">
-            <div class="cardframe blackcardframe">
-              <p class="titleheader"> Rover list</p>
-              <!-- <p>Rover status</p> -->
+            <!-- <div class="cardframe blackcardframe"> -->
+              <div class="card text-center">
+                <!-- <p class="titleheader"> Rover list</p> -->
+                <!-- <p>Rover status</p> -->
+                
+                
+                <div class=" Trancardframe text-center">
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-4">
+                    <p>Rover :</p>
+                  </div>
+                  <div class="col-4">
+                    <p>{{ namerover }}</p>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-4">
+                    <p>Status : </p>
+                  </div>
+                  <div class="col-4">
+                    <p>{{ StatusRover }}</p>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-4">
+                    <p>Door:</p>
+                  </div>
+                  <div class="col-4">
+                    <p>{{ DoorStatus }}</p>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-4">
+                    <p>Battery :</p>
+                  </div>
+                  <div class="col-4">
+                    <p>{{ Battery }}</p>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-4">
+                    <p>Velocity:</p>
+                  </div>
+                  <div class="col-4">
+                    <p>{{ Velocity }}</p>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
 
-
-              <div class="cardframemini Trancardframe">
-
-                <p>Rover : {{ namerover }}</p>
+                <!-- <p>Rover : {{ namerover }}</p>
                 <p>Status : {{ StatusRover }}</p>
+                <p>DoorStatus: {{ Velocity }}</p>
                 <p>Battery : {{ Battery }}</p>
-                <p>Velocity: {{ Velocity }}</p>
+                <p>Velocity: {{ Velocity }}</p> -->
                 <p></p>
               </div>
               <!-- <p>Order tatus</p> -->
-              <div class="cardframeminize Trancardframe">
+              <!-- <div class="cardframeminize Trancardframe">
                 <p>Order No. : </p>
                 <p>Status : </p>
                 <p>Time Estima : </p>
-              </div>
+              </div> -->
+
+
               <!-- <div class="Rover_List Contact_Text">
                 <div class="Frame_857 autoFrame_857">
                   <div class="Asset_1_2">
@@ -77,17 +132,19 @@
                 <button type="button"  :class="isActive ? 'buttonclose-33' : 'button-33'"
                 @click="isActive = !isActive">Auto</button>
             </div> -->
-            <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
+            <!-- <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
               @click="toggle()">
-              {{ isActive ? 'Manual' : 'Auto' }}</button>
+              {{ isActive ? 'Manual' : 'Auto' }}</button> -->
+              <button v-if="activeauto" type="button" class="btn btn-primary btn-lg btn-block" @click="toggle()">{{ isActive ? 'Manual' : 'Auto' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
               <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
                 isActive ? 'ON' : 'OFF' }}</button>
             </div> -->
-            <div v-if="isActive">
-              <!-- <button type="button" class="button-33" @click="joystick()">Joy</button> -->
+            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block" @click="doorS()">Opendoor</button>
+            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block" @click="joystick()">Joy</button>
+            <!-- <div v-if="isActive">
               <button type="button" class="btn btn-dark" @click="joystick()">Joy</button>
-            </div>
+            </div> -->
 
             <div v-if="isActiveJoy && isActive">
               <button type="button" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA"></button>
@@ -186,6 +243,7 @@ export default {
       isOpened: true,
       isActive: false,
       isActiveJoy: false,
+      isActiveDoor: false,
       isActiveOpencontorl: false,
       rover: "",
       selectedItem: 1,
@@ -199,6 +257,7 @@ export default {
       StatusRover: "N/a",
       Battery: "N/a",
       Velocity: "N/a",
+      DoorStatus:null,
       timeone: 0,
       timemqtt: 0,
       idcamera: 0,
@@ -302,6 +361,18 @@ export default {
         this.dbRefAutoContorl.update({ auto: true });
       }
     },
+    doorS() {
+      this.isActiveDoor = this.isActiveDoor ? false : true;
+
+      if (this.isActiveDoor) {
+        this.dbRefAutoDoor = firebaseApp.database().ref("/" + this.namerover + '/status')
+        this.dbRefAutoDoor.update({ door: false });
+      }
+      else {
+        this.dbRefAutoDoor = firebaseApp.database().ref("/" + this.namerover + '/status')
+        this.dbRefAutoDoor.update({ door: true });
+      }
+    },
     clicked() {
       if (!this.isActive) {
         this.isActive = true;
@@ -323,11 +394,13 @@ export default {
       }
       if (this.refStatus == true) {
         this.dbStatus.off()
+        this.dbRefAutoDoor.off()
         this.refStatus = false;
       }
       if (this.refJoystick == true) {
         this.dbRefJoystick.off()
         this.dbRefAutoContorl.off()
+        
         this.refJoystick = false;
       }
       var refStatus = "";
@@ -373,10 +446,13 @@ export default {
                 this.Velocity = value + ' m/s'
               }
               if (key == 'idcam') {
-
+                
                 // console.log(`${key}: ${value}`);
                 this.idcamera = value
                 this.start();
+              }
+              if (key == 'door') {
+                this.DoorStatus = value
               }
 
 
@@ -500,6 +576,7 @@ export default {
     close() {
       this.dbRefAutoContorl.off()
     },
+    
     auto() {
       // this.dbRefJoystick.set({});
       console.log("======================>")
