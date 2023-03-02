@@ -1,21 +1,28 @@
 <template>
-  <div class="map-section">
-   <gmap-map :center="center" :zoom="16.5" style="width: 100%; height: 100%" :options="{
-      zoomControl: false,
-      scaleControl: true,
-      mapTypeControl: true,
-      // mapTypeId: 'Map',
-      // mapTypeId: 'satellite',
-      fullscreenControl: true,
-      streetViewControl: false,
-      disableDefaultUi: false
-    }">
-     
-      <gmap-marker v-for="(item, key) in coordinates" :key="key" :position="getPosition(item)" :clickable="true"
-        :icon="getMarkers1(key)" @click="toggleInfo(item, key)"></gmap-marker>
-      <!-- <gmap-marker v-on:change="updateCoordinates()" :position="center" :draggable="true" @closeclick="updateCoordinates()"/> -->
-    </gmap-map>
-    </div>
+  
+    <div class="map-section">
+     <gmap-map :center="center" :zoom="18" style="width: 100%; height: 75%" :options="{
+        zoomControl: true,
+        scaleControl: true,
+        mapTypeControl: true,
+        // mapTypeId: 'Map',
+        // mapTypeId: 'satellite',
+        panControl: false,
+        streetViewControl: true,
+        fullscreenControl: true,
+        // streetViewControl: false,
+        // disableDefaultUi: false
+        disableDefaultUi: true,
+        overviewMapControl: true,
+        scrollwheel: true,
+      }">
+       
+        <gmap-marker v-for="(item, key) in coordinates" :key="key" :position="getPosition(item)" :clickable="true"
+          :icon="getMarkers1(key)" @click="toggleInfo(item, key)"></gmap-marker>
+        <!-- <gmap-marker v-on:change="updateCoordinates()" :position="center" :draggable="true" @closeclick="updateCoordinates()"/> -->
+      </gmap-map>
+      
+  </div>
 </template>
  
 <script>

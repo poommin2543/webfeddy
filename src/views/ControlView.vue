@@ -5,12 +5,11 @@
         <div class="row grid-color-black  ">
           <div class="col-xl-12  ">
 
-            <a>Poommin Phinphimai</a>
             <br><a>Admin</a>
           </div>
         </div>
         <div class="row grid-color-black  ">
-          <div class="col-xl-12">
+          <div class="col-xl-12" id="cardroverList">
             <!-- <div class="cardframe blackcardframe"> -->
             <div class="card text-center">
               <!-- <p class="titleheader"> Rover list</p> -->
@@ -31,15 +30,15 @@
             </div>
           </div>
         </div>
-        <div class="row grid-color-black ">
+        <!-- <div class="row grid-color-black ">
           <div class="col-xl-12">
             <p>Noom</p>
           </div>
-        </div>
+        </div> -->
         <div class="row grid-color-black ">
-          <div class="col-xl-12">
+          <div class="col-xl-12" id = "cardStatus">
             <!-- <div class="cardframe blackcardframe"> -->
-            <div class="cardStatus">
+            <div class="cardRoverlist">
               <!-- <p class="titleheader"> Rover list</p> -->
               <!-- <p>Rover status</p> -->
               <!-- <div class=" Trancardframe text-center"> -->
@@ -115,26 +114,26 @@
             <!-- <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
               @click="toggle()">
               {{ isActive ? 'Manual' : 'Auto' }}</button> -->
-            <button v-if="activeauto" type="button" class="btn btn-primary btn-lg btn-block" @click="toggle()">{{ isActive
-              ? 'Manual' : 'Auto' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
               <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
                 isActive ? 'ON' : 'OFF' }}</button>
-            </div> -->
-            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
-              @click="doorS()">Opendoor</button>
-            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
-              @click="joystick()">Joy</button>
-
-
-            <div v-if="isActiveJoy && isActive">
-              <button type="button" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA"></button>
-              <button type="button" v-gamepad:button-x="pressedX" v-gamepad:button-x.released="releasedX"></button>
-              <button type="button" v-gamepad:button-y="pressedY" v-gamepad:button-y.released="releasedY"></button>
-              <button type="button" v-gamepad:button-b="pressedB" v-gamepad:button-b.released="releasedB"></button>
-              <button type="button" v-gamepad:shoulder-left="pressedReset"
-                v-gamepad:shoulder-left.released="releasedReset" v-on:click="pressedReset"></button>
-            </div>
+              </div> -->
+              <div id="button-Auto-layout">
+                <button v-if="activeauto" type="button" class="btn btn-primary btn-lg btn-block" @click="toggle()">{{ isActive
+                  ? 'Manual' : 'Auto' }}</button>
+              <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
+                @click="doorS()">Opendoor</button>
+              <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
+                @click="joystick()">Joy</button>
+              <div v-if="isActiveJoy && isActive">
+                <button type="button" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA"></button>
+                <button type="button" v-gamepad:button-x="pressedX" v-gamepad:button-x.released="releasedX"></button>
+                <button type="button" v-gamepad:button-y="pressedY" v-gamepad:button-y.released="releasedY"></button>
+                <button type="button" v-gamepad:button-b="pressedB" v-gamepad:button-b.released="releasedB"></button>
+                <button type="button" v-gamepad:shoulder-left="pressedReset"
+                  v-gamepad:shoulder-left.released="releasedReset" v-on:click="pressedReset"></button>
+              </div>
+              </div>
           </div>
         </div>
         <div class="row grid-color-black ">
@@ -156,11 +155,11 @@
               <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
               <div class="video-vtn img-fluid " alt="Responsive image">
                 <!-- <h3>{{ status }}</h3> -->
-                <div v-if="status == 'started'" class='card-img-top'>
+                <div v-if="status == 'started'" id='card-img-top'>
                   <div class="card-body">
-                    <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
-                    <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream"
-                      playsinline width="1280px" height="240px"></video>
+                    <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image">
+                    <!-- <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream"
+                      playsinline width="1280px" height="240px"></video> -->
                   </div>
                 </div>
               </div>

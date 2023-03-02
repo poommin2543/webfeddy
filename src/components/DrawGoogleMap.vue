@@ -31,9 +31,11 @@
       mapTypeControl: true,
       // mapTypeId: 'Map',
       // mapTypeId: 'satellite',
+      // streetViewControl: true,
       fullscreenControl: true,
       streetViewControl: false,
-      disableDefaultUi: false
+      disableDefaultUi: false,
+      
     }">
       <!-- <gmap-marker
         :key="index"
