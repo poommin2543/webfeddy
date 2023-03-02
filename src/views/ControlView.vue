@@ -150,7 +150,7 @@
       </div>
       <div class="col-xl-10">
         <div class="col-xl-12  grid-color-black">
-          <div class="row ">
+          <div class="row">
 
             <div class="col-xl-12 ">
               <h3 v-if="status == 'starting'"> Loading video stream ... </h3>
