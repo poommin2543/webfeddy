@@ -12,7 +12,7 @@
         <div class="row grid-color-black  ">
           <div class="col-xl-12">
             <!-- <div class="cardframe blackcardframe"> -->
-              <div class="card text-center">
+            <div class="card text-center">
               <!-- <p class="titleheader"> Rover list</p> -->
               <v-list>
                 <div class="centerList">
@@ -39,76 +39,56 @@
         <div class="row grid-color-black ">
           <div class="col-xl-12">
             <!-- <div class="cardframe blackcardframe"> -->
-              <div class="card text-center">
-                <!-- <p class="titleheader"> Rover list</p> -->
-                <!-- <p>Rover status</p> -->
+            <div class="cardStatus">
+              <!-- <p class="titleheader"> Rover list</p> -->
+              <!-- <p>Rover status</p> -->
+              <!-- <div class=" Trancardframe text-center"> -->
+                <div class="row">
+                  <div class="col-6">
+                    <p class="text-right">Rover :</p>
+                  </div>                 
+                  <div class="col-6">
+                    <p class="text-left">{{ namerover }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <p class="text-right">Status :</p>
+                  </div>                 
+                  <div class="col-6">
+                    <p class="text-left">
+                      <span v-if="StatusRover == 'offline'" class="badge badge-danger">{{ StatusRover }}</span>
+                      <span v-if="StatusRover == 'on'" class="badge badge-success">{{ StatusRover }}</span>
+                    </p>
+                  </div>
+                </div>
                 
+                <div class="row">
+                  <div class="col-6">
+                    <p class="text-right">Door:</p>
+                  </div>                 
+                  <div class="col-6">
+                    <p class="text-left">{{ DoorStatus }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <p class="text-right">Battery :</p>
+                  </div>                 
+                  <div class="col-6">
+                    <p class="text-left">{{ Battery }}</p>
+                  </div>
+                </div>
                 
-                <div class=" Trancardframe text-center">
                 <div class="row">
-                  <div class="col-2"></div>
-                  <div class="col-4">
-                    <p>Rover :</p>
+                  <div class="col-6">
+                    <p class="text-right">Velocity:</p>
+                  </div>                 
+                  <div class="col-6">
+                    <p class="text-left">{{ Velocity }}</p>
                   </div>
-                  <div class="col-4">
-                    <p>{{ namerover }}</p>
-                  </div>
-                  <div class="col-2"></div>
                 </div>
-                <div class="row">
-                  <div class="col-2"></div>
-                  <div class="col-4">
-                    <p>Status : </p>
-                  </div>
-                  <div class="col-4">
-                    <p>{{ StatusRover }}</p>
-                  </div>
-                  <div class="col-2"></div>
-                </div>
-                <div class="row">
-                  <div class="col-2"></div>
-                  <div class="col-4">
-                    <p>Door:</p>
-                  </div>
-                  <div class="col-4">
-                    <p>{{ DoorStatus }}</p>
-                  </div>
-                  <div class="col-2"></div>
-                </div>
-                <div class="row">
-                  <div class="col-2"></div>
-                  <div class="col-4">
-                    <p>Battery :</p>
-                  </div>
-                  <div class="col-4">
-                    <p>{{ Battery }}</p>
-                  </div>
-                  <div class="col-2"></div>
-                </div>
-                <div class="row">
-                  <div class="col-2"></div>
-                  <div class="col-4">
-                    <p>Velocity:</p>
-                  </div>
-                  <div class="col-4">
-                    <p>{{ Velocity }}</p>
-                  </div>
-                  <div class="col-2"></div>
-                </div>
-
-                <!-- <p>Rover : {{ namerover }}</p>
-                <p>Status : {{ StatusRover }}</p>
-                <p>DoorStatus: {{ Velocity }}</p>
-                <p>Battery : {{ Battery }}</p>
-                <p>Velocity: {{ Velocity }}</p> -->
-                <p></p>
-              </div>
-              <!-- <p>Order tatus</p> -->
-              <!-- <div class="cardframeminize Trancardframe">
-                <p>Order No. : </p>
-                <p>Status : </p>
-                <p>Time Estima : </p>
-              </div> -->
+                
 
 
               <!-- <div class="Rover_List Contact_Text">
@@ -135,16 +115,17 @@
             <!-- <button v-if="activeauto" class="ui button big" :class="[isActive ? 'buttonclose-33' : 'button-33']"
               @click="toggle()">
               {{ isActive ? 'Manual' : 'Auto' }}</button> -->
-              <button v-if="activeauto" type="button" class="btn btn-primary btn-lg btn-block" @click="toggle()">{{ isActive ? 'Manual' : 'Auto' }}</button>
+            <button v-if="activeauto" type="button" class="btn btn-primary btn-lg btn-block" @click="toggle()">{{ isActive
+              ? 'Manual' : 'Auto' }}</button>
             <!-- <div v-if="isActiveOpencontorl === true">
               <button type="button" :class="isActive ? 'button-33' : 'buttonclose-33'" @click="toggle()">{{
                 isActive ? 'ON' : 'OFF' }}</button>
             </div> -->
-            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block" @click="doorS()">Opendoor</button>
-            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block" @click="joystick()">Joy</button>
-            <!-- <div v-if="isActive">
-              <button type="button" class="btn btn-dark" @click="joystick()">Joy</button>
-            </div> -->
+            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
+              @click="doorS()">Opendoor</button>
+            <button v-if="isActive" type="button" class="btn btn-secondary btn-lg btn-block"
+              @click="joystick()">Joy</button>
+
 
             <div v-if="isActiveJoy && isActive">
               <button type="button" v-gamepad:button-a="pressedA" v-gamepad:button-a.released="releasedA"></button>
@@ -156,22 +137,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row grid-color-black ">
-          <div class="col-xl-12">
-            <div class="Rover_List">
-              <div class="Frame_857">
-                <div class="col-sm-2">
-                  <div class="Rover_Class_final_front_1">
-                  </div>
-                    <div class="col-sm-8">
-                      <p class="text_roverlist">Rover001</p>
-                    </div>
-                    <div class="col-sm-2"></div>
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div> -->
         <div class="row grid-color-black ">
           <div class="col-xl-12">
             <div class="cardframelogo Trancardframe">
@@ -185,7 +150,6 @@
       </div>
       <div class="col-xl-10">
         <div class="col-xl-12  grid-color-black">
-          <!-- <Stream></Stream> -->
           <div class="row ">
 
             <div class="col-xl-12 ">
@@ -197,16 +161,9 @@
                     <!-- <img v-if="status == 'started'" src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
                     <video v-if="status == 'started'" autoplay="autoplay" :srcObject.prop="stream" ref="videoStream"
                       playsinline width="1280px" height="240px"></video>
-                    <!-- <img src="../assets/img/template.png" class="img-fluid" alt="Responsive image"> -->
-                    <!-- This is some text within a card body. -->
                   </div>
                 </div>
               </div>
-              <!-- <div class="align-self-start">Aligned flex item</div>
-<div class="align-self-end">Aligned flex item</div>
-<div class="align-self-center">Aligned flex item</div>
-<div class="align-self-baseline">Aligned flex item</div>
-<div class="align-self-stretch">Aligned flex item</div> -->
             </div>
           </div>
         </div>
@@ -257,7 +214,7 @@ export default {
       StatusRover: "N/a",
       Battery: "N/a",
       Velocity: "N/a",
-      DoorStatus:null,
+      DoorStatus: "N/a",
       timeone: 0,
       timemqtt: 0,
       idcamera: 0,
@@ -362,7 +319,8 @@ export default {
       }
     },
     doorS() {
-      this.isActiveDoor = this.isActiveDoor ? false : true;
+      // this.isActiveDoor = this.isActiveDoor ? false : true;
+      this.isActiveDoor = !this.isActiveDoor
 
       if (this.isActiveDoor) {
         this.dbRefAutoDoor = firebaseApp.database().ref("/" + this.namerover + '/status')
@@ -373,15 +331,7 @@ export default {
         this.dbRefAutoDoor.update({ door: true });
       }
     },
-    clicked() {
-      if (!this.isActive) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
-      }
-      console.log(this.isActive);
-      // this.isActive = this.isActive ? false : true;
-    },
+
     updateSelected(totoal) {
       console.log(totoal)
       this.doUnSubscribe()
@@ -394,13 +344,11 @@ export default {
       }
       if (this.refStatus == true) {
         this.dbStatus.off()
-        this.dbRefAutoDoor.off()
         this.refStatus = false;
       }
       if (this.refJoystick == true) {
         this.dbRefJoystick.off()
         this.dbRefAutoContorl.off()
-        
         this.refJoystick = false;
       }
       var refStatus = "";
@@ -434,7 +382,7 @@ export default {
           this.refStatus = true;
           this.dbStatus.on('value', ss => {
             for (const [key, value] of Object.entries(ss.val())) {
-              // console.log(`${key}: ${value}`);
+              console.log(`${key}: ${value}`);
               if (key == 'Battery') {
 
                 // console.log(`${key}: ${value}`);
@@ -446,13 +394,19 @@ export default {
                 this.Velocity = value + ' m/s'
               }
               if (key == 'idcam') {
-                
+
                 // console.log(`${key}: ${value}`);
                 this.idcamera = value
                 this.start();
               }
               if (key == 'door') {
-                this.DoorStatus = value
+                // console.log(`${key}: ${value}`);
+                if (value == true) {
+                  this.DoorStatus = "Open"
+                }
+                else {
+                  this.DoorStatus = "Close"
+                }
               }
 
 
@@ -576,7 +530,7 @@ export default {
     close() {
       this.dbRefAutoContorl.off()
     },
-    
+
     auto() {
       // this.dbRefJoystick.set({});
       console.log("======================>")
