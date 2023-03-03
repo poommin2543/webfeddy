@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-    <p>noom</p>
-  </div>
+  <v-container>
+    <v-btn>
+  Button
+</v-btn>
+  </v-container>
 </template>
 
 <script>
