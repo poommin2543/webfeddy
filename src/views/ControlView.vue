@@ -35,6 +35,7 @@
             <p>Noom</p>
           </div>
         </div> -->
+        <div></div>
         <div class="row grid-color-black ">
           <div class="col-xl-12" id = "cardStatus">
             <!-- <div class="cardframe blackcardframe"> -->
