@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ControlView from '../views/ControlView.vue'
 import Map from '../components/Map.vue'
+import homepageView from '../views/HomepageView.vue'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/C',
     name: 'ControlView',
     component: ControlView
+  },
+  {
+    path: '/home',
+    name: 'homepageView',
+    component: homepageView
   },
   {
     path: '/map',

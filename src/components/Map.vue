@@ -32,7 +32,7 @@ var long = 102.01502828868293;
 var la_User = 14.875811571268388;
 var long_User = 102.01502828868293;
 export default {
-name: "DrawGoogleMap",
+name: "MapShow",
 
 props: {
   LogoImg: {

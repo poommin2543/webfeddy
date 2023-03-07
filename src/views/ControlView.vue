@@ -168,7 +168,7 @@
             </div>
           </div>
           <div class="col-xl-12 card-Footer grid-color-black grid-scall">
-            <Map></Map>
+            <!-- <Map></Map> -->
           </div>
         </div>
       </div>
@@ -177,21 +177,21 @@
   </template>
   
   <script>
-  import Map from "@/components/Map.vue"
+//   import Map from "@/components/Map.vue"
   // import Stream from "@/components/Muticamera.vue"
   import firebaseApp from '@/plugins/firebase'
   import mqtt from 'mqtt/dist/mqtt'
   import { Janus } from 'janus-gateway'
-  let JANUS_URL = 'https://34.143.225.243:8089/janus'
+//   let JANUS_URL = 'https://34.143.225.243:8089/janus'
   let PicVdotest = require('../assets/img/class_front.png')
   if (window.location.protocol === 'http:') {
     // console.log(JANUS_URL)
-    JANUS_URL = 'http://103.82.249.178:8088/janus'
-    console.log(JANUS_URL)
+    // JANUS_URL = 'http://103.82.249.178:8088/janus'
+    // console.log(JANUS_URL)
   }
   export default {
     components: {
-      Map,
+    //   Map,
       // Stream
     },
     data() {
@@ -280,16 +280,16 @@
     mounted() {
       this.createConnection()
       // this.doSubscribe()
-      this.interval = setInterval(() => this.Checkonline(), 3000);
-      this.isOpened = this.isMenuOpen
-      Janus.init({
-        debug: true,
-        dependencies: Janus.useDefaultDependencies(),
-        callback: () => {
-          console.log("Connecting to Janus api with server ", JANUS_URL)
-          this.connect(JANUS_URL)
-        }
-      })
+    //   this.interval = setInterval(() => this.Checkonline(), 3000);
+    //   this.isOpened = this.isMenuOpen
+    //   Janus.init({
+    //     debug: true,
+    //     dependencies: Janus.useDefaultDependencies(),
+    //     callback: () => {
+    //       console.log("Connecting to Janus api with server ", JANUS_URL)
+    //       this.connect(JANUS_URL)
+    //     }
+    //   })
       this.dbRef.on('value', ss => {
         // console.log(ss.val());
         this.items = []
