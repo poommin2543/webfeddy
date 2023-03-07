@@ -1,4 +1,4 @@
-# vue-janus
+# demo
 
 ## Project setup
 ```
