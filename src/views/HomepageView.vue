@@ -20,6 +20,12 @@
                 </v-row>
             </v-card>
             <v-card width="100%" height="30%" color="blue" class="">
+                <!-- <v-list>
+                    <v-list-item>Noom</v-list-item>
+                    <v-list-item>
+
+                    </v-list-item>
+                </v-list> -->
                 <v-card width="95%" height="95%" color="white" class="pa-0 ma-2 scrolling">
                     <v-list>
                         <v-list-item-group v-model="model" mandatory color="indigo">
@@ -54,43 +60,73 @@
     </v-container>
 </template>
 <script>
+import firebaseApp from '@/plugins/firebase'
+
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                {
-                    icon: 'mdi-wifi',
-                    text: 'Wifi',
-                },
-                {
-                    icon: 'mdi-bluetooth',
-                    text: 'Bluetooth',
-                },
-                {
-                    icon: 'mdi-chart-donut',
-                    text: 'Data Usage',
-                },
-                {
-                    icon: 'mdi-chart-donut',
-                    text: 'Data Usage',
-                },
-                {
-                    icon: 'mdi-chart-donut',
-                    text: 'Data Usage',
-                },
-                {
-                    icon: 'mdi-chart-donut',
-                    text: 'Data Usage',
-                },
-                {
-                    icon: 'mdi-chart-donut',
-                    text: 'Data Usage',
-                },
+                // {
+                //     icon: 'mdi-wifi',
+                //     text: 'Wifi',
+                // },
+                // {
+                //     icon: 'mdi-bluetooth',
+                //     text: 'Bluetooth',
+                // },
+                // {
+                //     icon: 'mdi-chart-donut',
+                //     text: 'Data Usage',
+                // },
+                
+                
             ],
         }
 
     },
+    mounted() {
+    //   this.createConnection()
+      // this.doSubscribe()
+    //   this.interval = setInterval(() => this.Checkonline(), 3000);
+    //   this.isOpened = this.isMenuOpen
+    //   Janus.init({
+    //     debug: true,
+    //     dependencies: Janus.useDefaultDependencies(),
+    //     callback: () => {
+    //       console.log("Connecting to Janus api with server ", JANUS_URL)
+    //       this.connect(JANUS_URL)
+    //     }
+    //   })
+      this.dbRef.on('value', ss => {
+        // console.log(ss.val());
+        this.items = []
+        // this.items.remove()
+        for (const [key,value] of Object.entries(ss.val())) {
+          console.log(`${key}: ${value}`);
+          // console.log(`${key}`);
+          this.items.push({
+            text: key,
+            // icon: require('../assets/img/class_front.png'),
+            icon: 'toys',
+          });
+        }
+      })
+    },
+    created() {
+      console.log("created()");
+      // สร้าง reference ไปยัง counter ซึ่งเป็น root node ของ reatime database
+      this.dbRef = firebaseApp.database().ref('/')
+      // this.dbStatus = firebaseApp.database().ref('/Rover1/status')
+      // this.dbRef1 = firebaseApp.database().ref('Rover1/location/user')
+    },
+    beforeDestroy() {
+      console.log("beforeDestroy()");
+      // ยกเลิก subsciption เมื่อ component ถูกถอดจาก dom
+      this.dbRef.off()
+      this.dbStatus.off()
+      // this.dbRef1.off()
+    }
 }
 </script>
 <style>
