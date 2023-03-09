@@ -1,22 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import * as VueGoogleMaps from "vue2-google-maps"
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
-import VueGamepad from 'vue-gamepad';
-import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
+import store from './store'
+// import vuetify from './plugins/vuetify'
 import Vuetify from 'vuetify'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-// createApp(App).mount('#app')
-Vue.use(Vuetify)
-Vue.component('vue-sidebar-menu-akahon', VueSidebarMenuAkahon);
+import 'vuetify/dist/vuetify.min.css'
+import vuetify from './plugins/vuetify'
+import * as VueGoogleMaps from "vue2-google-maps"
+import VueGamepad from 'vue-gamepad';
+import 'material-design-icons-iconfont'
 Vue.use(VueGamepad);
-Vue.use(VueMaterial)
-Vue.config.productionTip = false
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyD553x-on9CsDmxWaD3rfKg2l3MX48kov8",
@@ -24,7 +17,12 @@ Vue.use(VueGoogleMaps, {
     libraries: "places,drawing,visualization"
   }
 });
+Vue.use(Vuetify)
+Vue.config.productionTip = false
+// Vue.use(Vuetify)
 new Vue({
   router,
+  store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
