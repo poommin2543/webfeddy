@@ -284,14 +284,14 @@ export default {
     // this.doSubscribe()
     this.interval = setInterval(() => this.Checkonline(), 3000);
     this.isOpened = this.isMenuOpen
-    Janus.init({
-      debug: true,
-      dependencies: Janus.useDefaultDependencies(),
-      callback: () => {
-        console.log("Connecting to Janus api with server ", JANUS_URL)
-        this.connect(JANUS_URL)
-      }
-    })
+    // Janus.init({
+    //   debug: true,
+    //   dependencies: Janus.useDefaultDependencies(),
+    //   callback: () => {
+    //     console.log("Connecting to Janus api with server ", JANUS_URL)
+    //     this.connect(JANUS_URL)
+    //   }
+    // })
     this.dbRef.on('value', ss => {
       // console.log(ss.val());
       this.items = []
@@ -397,7 +397,7 @@ export default {
 
                 // console.log(`${key}: ${value}`);
                 this.idcamera = value
-                this.start();
+                // this.start();
               }
               if (key == 'door') {
                 // console.log(`${key}: ${value}`);
